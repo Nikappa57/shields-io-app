@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:readme_editor/screens/auth_screen.dart';
 import 'package:readme_editor/screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -34,7 +37,15 @@ class MyApp extends StatelessWidget {
               ),
             ),
           )),
-      home: AuthScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.onAuthStateChanged,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return Home();
+          }
+          return AuthScreen();
+        },
+      ),
     );
   }
 }
