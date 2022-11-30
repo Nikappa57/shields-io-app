@@ -2,7 +2,8 @@
     package="com.example.readme_editor">
    <application
         android:label="readme_editor"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
