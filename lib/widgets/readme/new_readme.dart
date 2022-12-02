@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,12 +10,14 @@ class NewReadMe extends StatefulWidget {
 class _NewReadMeState extends State<NewReadMe> {
   String _enteredTitle = '';
 
-  void _newReadMe() {
+  void _newReadMe() async {
     Navigator.of(context).pop();
+    final user = await FirebaseAuth.instance.currentUser();
     Firestore.instance.collection('files').add({
       'project-name': _enteredTitle,
       'text': 'Hi',
       'create-at': Timestamp.now(),
+      'userId': user.uid,
     });
   }
 
