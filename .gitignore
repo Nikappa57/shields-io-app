@@ -140,6 +140,12 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+
+# Custom
 ios/Runner/GoogleService-Info.plist
 android/app/src/google-services.json
-.packages 2
+*.icloud
+.packages**
+..flutter-plugins**
+.dart_tool 2/**
