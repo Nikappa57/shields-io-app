@@ -62,7 +62,12 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = false;
       });
     } catch (err) {
-      print(err);
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(err),
+          backgroundColor: Theme.of(ctx).errorColor,
+        ),
+      );
     }
   }
 
