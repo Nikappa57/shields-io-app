@@ -142,3 +142,4 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 ios/Runner/GoogleService-Info.plist
 android/app/src/google-services.json
+.packages 2
