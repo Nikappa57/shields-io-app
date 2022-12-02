@@ -20,8 +20,9 @@ class ReadMeList extends StatelessWidget {
           }
           return StreamBuilder(
               stream: Firestore.instance
-                  .collection('files')
-                  .where('userId', isEqualTo: future.data.uid)
+                  .collection('users')
+                  .document(future.data.uid)
+                  .collection('readme')
                   .orderBy('create-at', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
