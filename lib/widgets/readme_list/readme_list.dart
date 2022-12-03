@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:readme_editor/widgets/readme/readme_item_list.dart';
+import 'package:readme_editor/widgets/readme_list/readme_item_list.dart';
 
 // TODO: pik existing project and add to db
 // TODO: possibility to commit readme
@@ -48,6 +48,7 @@ class ReadMeList extends StatelessWidget {
                       return ReadMeItemList(
                         files[index].documentID,
                         files[index]['project-name'],
+                        files[index]['text'],
                       );
                     });
               });

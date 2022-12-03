@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readme_editor/screens/single_readme.dart';
-import 'package:readme_editor/widgets/readme/rename_readme.dart';
+import 'package:readme_editor/widgets/readme_list/rename_readme.dart';
 
 class ReadMeItemList extends StatelessWidget {
-  ReadMeItemList(this.documentId, this.title);
+  ReadMeItemList(this.documentId, this.title, this.text);
 
-  final String title;
   final String documentId;
+  final String title;
+  final String text;
 
   void _deleteReadme(DismissDirection d) async {
     final user = await FirebaseAuth.instance.currentUser();
@@ -73,7 +74,8 @@ class ReadMeItemList extends StatelessWidget {
         child: ListTile(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SingleReadMe(documentId)),
+            MaterialPageRoute(
+                builder: (context) => SingleReadMe(documentId, title, text)),
           ),
           title: Text(
             title,
