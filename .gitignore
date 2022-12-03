@@ -150,3 +150,5 @@ android/app/src/google-services.json
 ..flutter-plugins**
 .dart_tool 2/**
 .flutter-plugins**
+ios/Flutter/Generated **
+ios/Flutter/flutter_export_environment **
