@@ -14,7 +14,7 @@ class ReadMeList extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: FirebaseAuth.instance.currentUser(),
-        builder: (BuildContext ctx, AsyncSnapshot<dynamic> future) {
+        builder: (BuildContext context, AsyncSnapshot<dynamic> future) {
           if (future.connectionState == ConnectionState.waiting) {
             return Center(
               child: SizedBox(
