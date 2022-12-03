@@ -149,3 +149,4 @@ android/app/src/google-services.json
 .packages**
 ..flutter-plugins**
 .dart_tool 2/**
+.flutter-plugins**
