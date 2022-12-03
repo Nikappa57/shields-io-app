@@ -16,7 +16,13 @@ class ReadMeList extends StatelessWidget {
         future: FirebaseAuth.instance.currentUser(),
         builder: (BuildContext ctx, AsyncSnapshot<dynamic> future) {
           if (future.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                height: 30,
+                width: 30,
+              ),
+            );
           }
           return StreamBuilder(
               stream: Firestore.instance
@@ -37,10 +43,13 @@ class ReadMeList extends StatelessWidget {
                 }
                 final files = snapshot.data.documents;
                 return ListView.builder(
-                  itemCount: files.length,
-                  itemBuilder: (context, index) =>
-                      ReadMeItemList(files[index]['project-name']),
-                );
+                    itemCount: files.length,
+                    itemBuilder: (context, index) {
+                      return ReadMeItemList(
+                        files[index].documentID,
+                        files[index]['project-name'],
+                      );
+                    });
               });
         });
   }
