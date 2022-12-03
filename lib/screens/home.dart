@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:readme_editor/widgets/readme/readme_list.dart';
-import 'package:readme_editor/widgets/readme/new_readme.dart';
+import 'package:readme_editor/widgets/readme_list/readme_list.dart';
+import 'package:readme_editor/widgets/readme_list/new_readme.dart';
 
 class Home extends StatelessWidget {
   @override
