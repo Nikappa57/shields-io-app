@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/screens/single_readme.dart';
 import 'package:readme_editor/widgets/readme/rename_readme.dart';
 
 class ReadMeItemList extends StatelessWidget {
@@ -70,6 +71,10 @@ class ReadMeItemList extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
         child: ListTile(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SingleReadMe(documentId)),
+          ),
           title: Text(
             title,
             style: TextStyle(
