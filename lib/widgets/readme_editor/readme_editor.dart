@@ -21,11 +21,14 @@ class _ReadMeEditorState extends State<ReadMeEditor> {
   Widget build(BuildContext context) {
     return Container(
       child: Scrollbar(
-          child: TextField(
-        controller: _controller,
-        expands: true,
-        maxLines: null,
-        onChanged: widget.onChange,
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          controller: _controller,
+          expands: true,
+          maxLines: null,
+          onChanged: widget.onChange,
+        ),
       )),
     );
   }

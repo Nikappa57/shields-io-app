@@ -23,7 +23,6 @@ class _ReadMePreviewState extends State<ReadMePreview> {
         selectable: true,
         data: widget.text,
       ),
-      padding: EdgeInsets.only(bottom: 20),
     );
   }
 }

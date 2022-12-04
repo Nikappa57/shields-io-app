@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/screens/readme_preview_fullscreen.dart';
 import 'package:readme_editor/widgets/readme_editor/readme_editor.dart';
 import 'package:readme_editor/widgets/readme_editor/readme_preview.dart';
 
@@ -61,15 +62,40 @@ class _SingleReadMeState extends State<SingleReadMe> {
       ),
       body: Column(
         children: [
-          SizedBox(
-            height: 150,
-            child: ReadMePreview(_textInput),
-          ),
-          Divider(
-            thickness: 2.0,
-            color: Theme.of(context).primaryColor,
+          Stack(
+            alignment: AlignmentDirectional.bottomEnd,
+            children: [
+              Container(
+                height: 150,
+                child: ReadMePreview(_textInput),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ),
+              Positioned(
+                child: IconButton(
+                  icon: Icon(
+                    Icons.fullscreen,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReadMePrevireFullScreen(
+                        widget.title,
+                        _textInput,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           Expanded(
+            flex: 1,
             child: ReadMeEditor(_textInput, _onChange),
           ),
         ],
