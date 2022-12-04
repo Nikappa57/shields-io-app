@@ -15,7 +15,7 @@ class _NewReadMeState extends State<NewReadMe> {
     final user = await FirebaseAuth.instance.currentUser();
     Firestore.instance.collection('users/${user.uid}/readme').add({
       'project-name': _enteredTitle,
-      'text': 'Hi',
+      'text': '# $_enteredTitle',
       'create-at': Timestamp.now(),
     });
   }
