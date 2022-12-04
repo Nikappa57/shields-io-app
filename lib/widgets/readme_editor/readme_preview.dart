@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
+
+// TODO: markdown styleSheet
 
 class ReadMePreview extends StatefulWidget {
   ReadMePreview(this.text);
@@ -11,18 +13,17 @@ class ReadMePreview extends StatefulWidget {
 }
 
 class _ReadMePreviewState extends State<ReadMePreview> {
+  ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Html(
-          data: md.markdownToHtml(
-            widget.text,
-            extensionSet: md.ExtensionSet.gitHubWeb,
-          ),
-        ),
-        padding: EdgeInsets.only(bottom: 20),
+    return Container(
+      child: Markdown(
+        controller: _controller,
+        selectable: true,
+        data: widget.text,
       ),
+      padding: EdgeInsets.only(bottom: 20),
     );
   }
 }
