@@ -13,12 +13,15 @@ class ReadMePreview extends StatefulWidget {
 class _ReadMePreviewState extends State<ReadMePreview> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Html(
-        data: md.markdownToHtml(
-          widget.text,
-          extensionSet: md.ExtensionSet.gitHubWeb,
+    return SingleChildScrollView(
+      child: Container(
+        child: Html(
+          data: md.markdownToHtml(
+            widget.text,
+            extensionSet: md.ExtensionSet.gitHubWeb,
+          ),
         ),
+        padding: EdgeInsets.only(bottom: 20),
       ),
     );
   }
