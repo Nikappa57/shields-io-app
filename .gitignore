@@ -152,3 +152,4 @@ android/app/src/google-services.json
 .flutter-plugins**
 ios/Flutter/Generated **
 ios/Flutter/flutter_export_environment **
+ios/Flutter/Flutter 2.podspec
