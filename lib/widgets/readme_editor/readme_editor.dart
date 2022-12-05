@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:simple_markdown_editor/simple_markdown_editor.dart';
+
+// TODO: add copy all btn
+// TODO: add
 
 class ReadMeEditor extends StatefulWidget {
   ReadMeEditor(this.text, this.onChange);
@@ -10,6 +14,7 @@ class ReadMeEditor extends StatefulWidget {
 
 class _ReadMeEditorState extends State<ReadMeEditor> {
   TextEditingController _controller = TextEditingController();
+  FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -21,15 +26,17 @@ class _ReadMeEditorState extends State<ReadMeEditor> {
   Widget build(BuildContext context) {
     return Container(
       child: Scrollbar(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextField(
-          controller: _controller,
-          expands: true,
-          maxLines: null,
-          onChanged: widget.onChange,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: MarkdownFormField(
+            controller: _controller,
+            enableToolBar: true,
+            emojiConvert: true,
+            autoCloseAfterSelectEmoji: false,
+            focusNode: _focusNode,
+          ),
         ),
-      )),
+      ),
     );
   }
 }

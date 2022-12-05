@@ -30,8 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   cloud_firestore: 0.13.5
   firebase_auth: 0.16.1
-  markdown: ^5.0.0
-  flutter_markdown: ^0.6.10
+  simple_markdown_editor: ^0.2.0
 
 dev_dependencies:
   flutter_test:
