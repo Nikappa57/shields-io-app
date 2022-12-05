@@ -1,6 +1,6 @@
-import 'package:readme_editor/shield/colors.dart';
-import 'package:readme_editor/shield/styles.dart';
-import 'package:readme_editor/shield/usedShield.dart';
+import 'package:readme_editor/src/shield/colors.dart';
+import 'package:readme_editor/src/shield/styles.dart';
+import 'package:readme_editor/src/shield/usedShield.dart';
 
 class Shield {
   Shield(
