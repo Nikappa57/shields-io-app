@@ -2,6 +2,12 @@ import 'package:readme_editor/src/shield/colors.dart';
 import 'package:readme_editor/src/shield/styles.dart';
 import 'package:readme_editor/src/shield/usedShield.dart';
 
+enum ShieldType {
+  static,
+  dependency,
+  used,
+}
+
 class Shield {
   Shield(
     String user,
@@ -29,6 +35,7 @@ class Shield {
   }
 
   String usedShield(UsedShield shieldPrefix) {
-    return shieldPrefix.link + "${this.user}/${this.repo}?style=${this.style})";
+    return shieldPrefix.markdown +
+        "${this.user}/${this.repo}?style=${this.style})";
   }
 }

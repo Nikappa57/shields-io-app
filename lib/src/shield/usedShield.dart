@@ -15,7 +15,7 @@ enum UsedShield {
 
 extension ColorExtension on UsedShield {
   String get name => describeEnum(this);
-  String get link {
+  String get markdown {
     switch (this) {
       case UsedShield.lastCommit:
         return "![last commit](/github/last-commit/";
@@ -36,7 +36,7 @@ extension ColorExtension on UsedShield {
       case UsedShield.pythonVersion:
         return "![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/";
       default:
-        return null;
+        return "";
     }
   }
 }

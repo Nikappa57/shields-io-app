@@ -25,39 +25,39 @@ extension ColorExtension on ShieldColor {
   Color get color {
     switch (this) {
       case ShieldColor.brightgreen:
-        return Color(0xff4AC41C);
+        return const Color(0xff4AC41C);
       case ShieldColor.green:
-        return Color(0xff95C20D);
+        return const Color(0xff95C20D);
       case ShieldColor.yellowgreen:
-        return Color(0xffA2A429);
+        return const Color(0xffA2A429);
       case ShieldColor.yellow:
-        return Color(0xffD6AF23);
+        return const Color(0xffD6AF23);
       case ShieldColor.orange:
-        return Color(0xffF37F40);
+        return const Color(0xffF37F40);
       case ShieldColor.red:
-        return Color(0xffD9644D);
+        return const Color(0xffD9644D);
       case ShieldColor.blue:
-        return Color(0xff0F80C1);
+        return const Color(0xff0F80C1);
       case ShieldColor.lightgrey:
-        return Color(0xff9E9E9E);
+        return const Color(0xff9E9E9E);
       case ShieldColor.success:
-        return Color(0xff4DC71F);
+        return const Color(0xff4DC71F);
       case ShieldColor.important:
-        return Color(0xffF37F40);
+        return const Color(0xffF37F40);
       case ShieldColor.critical:
-        return Color(0xffD9644D);
+        return const Color(0xffD9644D);
       case ShieldColor.informational:
-        return Color(0xff1081C2);
+        return const Color(0xff1081C2);
       case ShieldColor.inactive:
-        return Color(0xffA0A0A0);
+        return const Color(0xffA0A0A0);
       case ShieldColor.blueviolet:
-        return Color(0xff8A35D9);
+        return const Color(0xff8A35D9);
       case ShieldColor.pink:
-        return Color(0xffF46DB1);
+        return const Color(0xffF46DB1);
       case ShieldColor.lightblue:
-        return Color(0xff98C6F4);
+        return const Color(0xff98C6F4);
       default:
-        return null;
+        return const Color(0xff000000);
     }
   }
 }
