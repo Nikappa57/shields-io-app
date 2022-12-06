@@ -4,7 +4,7 @@ import 'package:readme_editor/widgets/readme_editor/dropdown_form.dart';
 
 class ReadMeDropdownButton extends StatelessWidget {
   ReadMeDropdownButton(this.addShield);
-  final Future<void> Function({
+  final void Function({
     String lable,
     String message,
     String packageName,
@@ -29,7 +29,8 @@ class ReadMeDropdownButton extends StatelessWidget {
       builder: (_) => GestureDetector(
         onTap: () {},
         behavior: HitTestBehavior.opaque,
-        child: DropdownForm(shieldType, addShield),
+        child:
+            SingleChildScrollView(child: DropdownForm(shieldType, addShield)),
       ),
     );
   }

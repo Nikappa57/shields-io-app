@@ -5,6 +5,8 @@ import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/widgets/readme_editor/dropdown_button.dart';
 import 'package:readme_editor/widgets/readme_editor/readme_editor.dart';
 
+// TODO: confirm exit
+
 class SingleReadMe extends StatefulWidget {
   SingleReadMe(this.documentId, this.title, this.text);
   final String documentId;
@@ -18,6 +20,7 @@ class SingleReadMe extends StatefulWidget {
 class _SingleReadMeState extends State<SingleReadMe> {
   String _textInput;
   bool _btnActive = false;
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -32,21 +35,21 @@ class _SingleReadMeState extends State<SingleReadMe> {
     });
   }
 
-  Future<void> _addShield({
+  void _addShield({
     String lable = '',
     String message = '',
     String packageName = '',
     String color,
     @required String style,
     @required ShieldType shieldType,
-  }) async {
+  }) {
     print(
         "NEWSHIELD $lable, $message, $color, $style ${shieldType.toString()}");
 
-    // TODO: paste markdwon in editor
     setState(() {
-      _textInput = _textInput + "\n" + "TOADD";
+      _controller.text += "\nTODO";
     });
+
     print(_textInput);
   }
 
@@ -68,17 +71,17 @@ class _SingleReadMeState extends State<SingleReadMe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //TODO: update this
         title: Text(widget.title),
-        titleSpacing: 0,
         actions: [
+          ReadMeDropdownButton(_addShield),
           IconButton(
             icon: Icon(Icons.cloud_upload_outlined),
             onPressed: _btnActive ? _updateReadMe : null,
           ),
-          ReadMeDropdownButton(_addShield)
         ],
       ),
-      body: ReadMeEditor(_textInput, _onChange),
+      body: ReadMeEditor(_textInput, _onChange, _controller),
     );
   }
 }

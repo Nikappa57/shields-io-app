@@ -10,7 +10,7 @@ import 'package:select_form_field/select_form_field.dart';
 class DropdownForm extends StatefulWidget {
   DropdownForm(this.shieldType, this.addShield);
 
-  final Future<void> Function({
+  final void Function({
     String lable,
     String message,
     String packageName,
@@ -63,7 +63,7 @@ class _DropdownFormState extends State<DropdownForm> {
   void _createNewShield(BuildContext context) async {
     print("NEW SHIELD");
     if (widget.shieldType == ShieldType.static) {
-      await widget.addShield(
+      widget.addShield(
         color: _color,
         message: _message,
         lable: _lable,
@@ -121,23 +121,23 @@ class _DropdownFormState extends State<DropdownForm> {
                       textInputAction: TextInputAction.next,
                       onSaved: (val) => _message = val,
                     ),
-                  SelectFormField(
-                    type: SelectFormFieldType.dropdown,
-                    initialValue: ShieldColor.values[0].name,
-                    icon: Icon(
-                      Icons.color_lens_outlined,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a color';
-                      }
-                      return null;
-                    },
-                    labelText: 'Color',
-                    items: _colorsValue,
-                    onSaved: (val) => _color = val,
-                  ),
+                  // SelectFormField(
+                  //   type: SelectFormFieldType.dropdown,
+                  //   initialValue: ShieldColor.values[0].name,
+                  //   icon: Icon(
+                  //     Icons.color_lens_outlined,
+                  //     color: Theme.of(context).primaryColor,
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Please select a color';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   labelText: 'Color',
+                  //   items: _colorsValue,
+                  //   onSaved: (val) => _color = val,
+                  // ),
                   SelectFormField(
                     type: SelectFormFieldType.dropdown,
                     initialValue: ShieldStyle.values[0].name,
