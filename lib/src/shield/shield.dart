@@ -10,21 +10,16 @@ enum ShieldType {
 
 class Shield {
   Shield(
-    String user,
-    String repo,
-    ShieldColor color,
-    ShieldStyle style,
-  ) {
-    this.user = user;
-    this.repo = repo;
-    this.color = color.name;
-    this.style = color.name;
-  }
+    this.user,
+    this.repo,
+    this.color,
+    this.style,
+  );
 
-  String user;
-  String color;
-  String repo;
-  String style;
+  final String user;
+  final String color;
+  final String repo;
+  final String style;
 
   String staticShield(String lable, String message) {
     return "![$lable](https://img.shields.io/badge/$lable-$message-${this.color}?style=${this.style})";
