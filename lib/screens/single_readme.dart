@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/widgets/readme_editor/dropdown_button.dart';
 import 'package:readme_editor/widgets/readme_editor/readme_editor.dart';
 
 class SingleReadMe extends StatefulWidget {
@@ -49,11 +50,13 @@ class _SingleReadMeState extends State<SingleReadMe> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        titleSpacing: 0,
         actions: [
           IconButton(
             icon: Icon(Icons.cloud_upload_outlined),
             onPressed: _btnActive ? _updateReadMe : null,
-          )
+          ),
+          ReadMeDropdownButton()
         ],
       ),
       body: ReadMeEditor(_textInput, _onChange),

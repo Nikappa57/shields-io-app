@@ -31,6 +31,9 @@ dependencies:
   cloud_firestore: 0.13.5
   firebase_auth: 0.16.1
   simple_markdown_editor: ^0.2.0
+  select_form_field: ^2.2.0
+  webview_flutter: 1.0.7
+  # TODO: appdate to new version
 
 dev_dependencies:
   flutter_test:
