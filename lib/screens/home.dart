@@ -25,9 +25,12 @@ class Home extends StatelessWidget {
                 child: Container(
                   child: Row(
                     children: [
-                      Icon(Icons.exit_to_app),
+                      Icon(
+                        Icons.exit_to_app,
+                        color: Theme.of(context).primaryColor,
+                      ),
                       SizedBox(
-                        height: 5,
+                        width: 5,
                       ),
                       Text("Logout"),
                     ],
@@ -36,7 +39,7 @@ class Home extends StatelessWidget {
                 value: 'logout',
               )
             ],
-          )
+          ),
         ],
       ),
       body: Container(
