@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/widgets/readme_editor/dropdown_button.dart';
 import 'package:readme_editor/widgets/readme_editor/readme_editor.dart';
 
@@ -31,6 +32,24 @@ class _SingleReadMeState extends State<SingleReadMe> {
     });
   }
 
+  Future<void> _addShield({
+    String lable = '',
+    String message = '',
+    String packageName = '',
+    String color,
+    @required String style,
+    @required ShieldType shieldType,
+  }) async {
+    print(
+        "NEWSHIELD $lable, $message, $color, $style ${shieldType.toString()}");
+
+    // TODO: paste markdwon in editor
+    setState(() {
+      _textInput = _textInput + "\n" + "TOADD";
+    });
+    print(_textInput);
+  }
+
   void _updateReadMe() async {
     final user = await FirebaseAuth.instance.currentUser();
     await Firestore.instance
@@ -56,7 +75,7 @@ class _SingleReadMeState extends State<SingleReadMe> {
             icon: Icon(Icons.cloud_upload_outlined),
             onPressed: _btnActive ? _updateReadMe : null,
           ),
-          ReadMeDropdownButton()
+          ReadMeDropdownButton(_addShield)
         ],
       ),
       body: ReadMeEditor(_textInput, _onChange),

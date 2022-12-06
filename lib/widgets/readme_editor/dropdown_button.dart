@@ -3,6 +3,16 @@ import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/widgets/readme_editor/dropdown_form.dart';
 
 class ReadMeDropdownButton extends StatelessWidget {
+  ReadMeDropdownButton(this.addShield);
+  final Future<void> Function({
+    String lable,
+    String message,
+    String packageName,
+    String color,
+    @required String style,
+    @required ShieldType shieldType,
+  }) addShield;
+
   void _createShield(
     BuildContext context,
     ShieldType shieldType,
@@ -19,7 +29,7 @@ class ReadMeDropdownButton extends StatelessWidget {
       builder: (_) => GestureDetector(
         onTap: () {},
         behavior: HitTestBehavior.opaque,
-        child: DropdownForm(shieldType),
+        child: DropdownForm(shieldType, addShield),
       ),
     );
   }
