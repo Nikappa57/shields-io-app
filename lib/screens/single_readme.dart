@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/src/shield/scraper.dart';
 import 'package:readme_editor/src/shield/shield.dart';
-import 'package:readme_editor/widgets/readme_editor/dropdown_button.dart';
-import 'package:readme_editor/widgets/readme_editor/readme_editor.dart';
+import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
 
 // TODO: confirm exit
 
@@ -19,23 +18,6 @@ class SingleReadMe extends StatefulWidget {
 }
 
 class _SingleReadMeState extends State<SingleReadMe> {
-  String _textInput;
-  bool _btnActive = false;
-  TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _textInput = widget.text;
-  }
-
-  void _onChange(value) {
-    setState(() {
-      _textInput = value;
-      _btnActive = true;
-    });
-  }
-
   void _addShield({
     String lable = '',
     String message = '',
@@ -62,24 +44,18 @@ class _SingleReadMeState extends State<SingleReadMe> {
       ).staticShield(lable, message);
     }
 
-    setState(() {
-      _controller.text += newShield;
-    });
+    // TODO
   }
 
-  void _updateReadMe() async {
-    final user = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('readme')
-        .doc(widget.documentId)
-        .update({'text': _textInput});
-
-    setState(() {
-      _btnActive = false;
-    });
-  }
+  // void _updateReadMe() async {
+  //   final user = FirebaseAuth.instance.currentUser;
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(user.uid)
+  //       .collection('readme')
+  //       .doc(widget.documentId)
+  //       .update({'text': _textInput});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +65,19 @@ class _SingleReadMeState extends State<SingleReadMe> {
         title: Text(widget.title),
         actions: [
           ReadMeDropdownButton(_addShield),
-          IconButton(
-            icon: Icon(Icons.cloud_upload_outlined),
-            onPressed: _btnActive ? _updateReadMe : null,
-          ),
         ],
       ),
-      body: ReadMeEditor(_textInput, _onChange, _controller),
+      body: FutureBuilder(
+        future: Scraper().categoryList,
+        builder: (BuildContext context,
+                AsyncSnapshot<List<Map<String, String>>> snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? CircularProgressIndicator()
+                : ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        Text(snapshot.data[index]['name'])),
+      ),
     );
   }
 }
