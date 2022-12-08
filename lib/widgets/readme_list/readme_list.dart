@@ -31,14 +31,14 @@ class ReadMeList extends StatelessWidget {
               ),
             );
           }
-          final files = snapshot.data.documents;
+          final files = snapshot.data.docs;
           return ListView.builder(
               itemCount: files.length,
               itemBuilder: (context, index) {
                 return ReadMeItemList(
                   files[index].id,
-                  files[index]['project-name'],
-                  files[index]['text'],
+                  files[index].data()['project-name'],
+                  files[index].data()['text'],
                   user.uid,
                 );
               });
