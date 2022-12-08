@@ -21,7 +21,7 @@ class Shield {
   final String style;
 
   String staticShield(String lable, String message) {
-    return "![$lable](https://raster.shields.io/badge/$lable-$message-${this.color}?style=${this.style})";
+    return "![$lable](https://img.shields.io/badge/$lable-$message-${this.color}?style=${this.style})";
   }
 
   String pipenvDependency(String packageName) {
