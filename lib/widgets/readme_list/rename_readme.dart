@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RenameReadMe extends StatefulWidget {
   RenameReadMe(this.documentId, this.title);
@@ -24,13 +24,13 @@ class _RenameReadMe extends State<RenameReadMe> {
 
   void _renameReadMe() async {
     Navigator.of(context).pop();
-    final user = await FirebaseAuth.instance.currentUser();
-    await Firestore.instance
+    final user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
         .collection('users')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('readme')
-        .document(widget.documentId)
-        .updateData({'project-name': _enteredTitle});
+        .doc(widget.documentId)
+        .update({'project-name': _enteredTitle});
   }
 
   @override

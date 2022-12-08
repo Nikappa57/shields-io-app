@@ -23,7 +23,7 @@ class _ReadMeEditorState extends State<ReadMeEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(
       child: Scrollbar(
         child: MarkdownFormField(
           controller: widget.controller,

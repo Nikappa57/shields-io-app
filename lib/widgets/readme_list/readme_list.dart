@@ -10,12 +10,19 @@ import 'package:readme_editor/widgets/readme_list/readme_item_list.dart';
 // TODO: show only user readme and add to firebase perms that
 
 class ReadMeList extends StatelessWidget {
+  final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: FirebaseAuth.instance.currentUser(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> future) {
-          if (future.connectionState == ConnectionState.waiting) {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('readme')
+            .orderBy('create-at', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: SizedBox(
                 child: CircularProgressIndicator(),
@@ -24,33 +31,16 @@ class ReadMeList extends StatelessWidget {
               ),
             );
           }
-          return StreamBuilder(
-              stream: Firestore.instance
-                  .collection('users')
-                  .document(future.data.uid)
-                  .collection('readme')
-                  .orderBy('create-at', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: SizedBox(
-                      child: CircularProgressIndicator(),
-                      height: 30,
-                      width: 30,
-                    ),
-                  );
-                }
-                final files = snapshot.data.documents;
-                return ListView.builder(
-                    itemCount: files.length,
-                    itemBuilder: (context, index) {
-                      return ReadMeItemList(
-                        files[index].documentID,
-                        files[index]['project-name'],
-                        files[index]['text'],
-                      );
-                    });
+          final files = snapshot.data.documents;
+          return ListView.builder(
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                return ReadMeItemList(
+                  files[index].id,
+                  files[index]['project-name'],
+                  files[index]['text'],
+                  user.uid,
+                );
               });
         });
   }

@@ -38,6 +38,7 @@ class ReadMeDropdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
+      underline: Container(),
       icon: Icon(
         Icons.shield,
         color: Theme.of(context).primaryIconTheme.color,

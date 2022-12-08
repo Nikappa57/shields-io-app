@@ -121,23 +121,23 @@ class _DropdownFormState extends State<DropdownForm> {
                       textInputAction: TextInputAction.next,
                       onSaved: (val) => _message = val,
                     ),
-                  // SelectFormField(
-                  //   type: SelectFormFieldType.dropdown,
-                  //   initialValue: ShieldColor.values[0].name,
-                  //   icon: Icon(
-                  //     Icons.color_lens_outlined,
-                  //     color: Theme.of(context).primaryColor,
-                  //   ),
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Please select a color';
-                  //     }
-                  //     return null;
-                  //   },
-                  //   labelText: 'Color',
-                  //   items: _colorsValue,
-                  //   onSaved: (val) => _color = val,
-                  // ),
+                  SelectFormField(
+                    type: SelectFormFieldType.dropdown,
+                    initialValue: ShieldColor.values[0].name,
+                    icon: Icon(
+                      Icons.color_lens_outlined,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a color';
+                      }
+                      return null;
+                    },
+                    labelText: 'Color',
+                    items: _colorsValue,
+                    onSaved: (val) => _color = val,
+                  ),
                   SelectFormField(
                     type: SelectFormFieldType.dropdown,
                     initialValue: ShieldStyle.values[0].name,

@@ -55,6 +55,9 @@ class _AuthFormState extends State<AuthForm> {
                 children: [
                   TextFormField(
                     key: ValueKey('email'),
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email',
@@ -76,6 +79,8 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin)
                     TextFormField(
                       key: ValueKey('username'),
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
                         labelText: 'GitHub Username',
                       ),

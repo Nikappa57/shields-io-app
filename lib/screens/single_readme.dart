@@ -8,10 +8,11 @@ import 'package:readme_editor/widgets/readme_editor/readme_editor.dart';
 // TODO: confirm exit
 
 class SingleReadMe extends StatefulWidget {
-  SingleReadMe(this.documentId, this.title, this.text);
+  SingleReadMe(this.documentId, this.title, this.text, this.userId);
   final String documentId;
   final String title;
   final String text;
+  final String userId;
 
   @override
   State<SingleReadMe> createState() => _SingleReadMeState();
@@ -42,25 +43,38 @@ class _SingleReadMeState extends State<SingleReadMe> {
     String color,
     @required String style,
     @required ShieldType shieldType,
-  }) {
+  }) async {
     print(
         "NEWSHIELD $lable, $message, $color, $style ${shieldType.toString()}");
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .get();
+    final String username = userData.data()['username'];
+
+    String newShield = "";
+    if (shieldType == ShieldType.static) {
+      newShield = Shield(
+        user: username,
+        repo: widget.title,
+        color: color,
+        style: style,
+      ).staticShield(lable, message);
+    }
 
     setState(() {
-      _controller.text += "\nTODO";
+      _controller.text += newShield;
     });
-
-    print(_textInput);
   }
 
   void _updateReadMe() async {
-    final user = await FirebaseAuth.instance.currentUser();
-    await Firestore.instance
+    final user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
         .collection('users')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('readme')
-        .document(widget.documentId)
-        .updateData({'text': _textInput});
+        .doc(widget.documentId)
+        .update({'text': _textInput});
 
     setState(() {
       _btnActive = false;

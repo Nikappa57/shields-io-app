@@ -1,5 +1,4 @@
-import 'package:readme_editor/src/shield/colors.dart';
-import 'package:readme_editor/src/shield/styles.dart';
+import 'package:flutter/material.dart';
 import 'package:readme_editor/src/shield/usedShield.dart';
 
 enum ShieldType {
@@ -9,12 +8,12 @@ enum ShieldType {
 }
 
 class Shield {
-  Shield(
-    this.user,
-    this.repo,
-    this.color,
-    this.style,
-  );
+  Shield({
+    @required this.user,
+    @required this.repo,
+    @required this.color,
+    @required this.style,
+  });
 
   final String user;
   final String color;
@@ -22,7 +21,7 @@ class Shield {
   final String style;
 
   String staticShield(String lable, String message) {
-    return "![$lable](https://img.shields.io/badge/$lable-$message-${this.color}?style=${this.style})";
+    return "![$lable](https://raster.shields.io/badge/$lable-$message-${this.color}?style=${this.style})";
   }
 
   String pipenvDependency(String packageName) {

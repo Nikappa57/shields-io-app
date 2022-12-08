@@ -11,6 +11,7 @@ class Home extends StatelessWidget {
         title: Text('ReadMe Editor'),
         actions: [
           DropdownButton(
+            underline: Container(),
             icon: Icon(
               Icons.more_vert,
               color: Theme.of(context).primaryIconTheme.color,

@@ -5,19 +5,19 @@ import 'package:readme_editor/screens/single_readme.dart';
 import 'package:readme_editor/widgets/readme_list/rename_readme.dart';
 
 class ReadMeItemList extends StatelessWidget {
-  ReadMeItemList(this.documentId, this.title, this.text);
+  ReadMeItemList(this.documentId, this.title, this.text, this.userId);
 
   final String documentId;
   final String title;
   final String text;
+  final String userId;
 
-  void _deleteReadme(DismissDirection d) async {
-    final user = await FirebaseAuth.instance.currentUser();
-    Firestore.instance
+  void _deleteReadme(DismissDirection d) {
+    FirebaseFirestore.instance
         .collection('users')
-        .document(user.uid)
+        .doc(userId)
         .collection('readme')
-        .document(documentId)
+        .doc(documentId)
         .delete();
   }
 
@@ -75,7 +75,8 @@ class ReadMeItemList extends StatelessWidget {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SingleReadMe(documentId, title, text)),
+                builder: (context) =>
+                    SingleReadMe(documentId, title, text, userId)),
           ),
           title: Text(
             title,
