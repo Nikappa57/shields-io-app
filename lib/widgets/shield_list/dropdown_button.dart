@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readme_editor/src/shield/shield.dart';
-import 'package:readme_editor/widgets/readme_editor/dropdown_form.dart';
+import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
 
 class ReadMeDropdownButton extends StatelessWidget {
   ReadMeDropdownButton(this.addShield);
