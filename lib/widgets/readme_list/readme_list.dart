@@ -36,10 +36,9 @@ class ReadMeList extends StatelessWidget {
               itemCount: files.length,
               itemBuilder: (context, index) {
                 return ReadMeItemList(
-                  files[index].id,
-                  files[index].data()['project-name'],
-                  files[index].data()['text'],
-                  user.uid,
+                  documentId: files[index].id,
+                  title: files[index].data()['project-name'],
+                  userId: user.uid,
                 );
               });
         });

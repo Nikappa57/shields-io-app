@@ -7,11 +7,16 @@ import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
 // TODO: confirm exit
 
 class SingleReadMe extends StatefulWidget {
-  SingleReadMe(this.documentId, this.title, this.text, this.userId);
+  SingleReadMe({
+    @required this.documentId,
+    @required this.title,
+    @required this.userId,
+    @required this.categoryList,
+  });
   final String documentId;
   final String title;
-  final String text;
   final String userId;
+  final List<Map<String, String>> categoryList;
 
   @override
   State<SingleReadMe> createState() => _SingleReadMeState();
@@ -67,17 +72,10 @@ class _SingleReadMeState extends State<SingleReadMe> {
           ReadMeDropdownButton(_addShield),
         ],
       ),
-      body: FutureBuilder(
-        future: Scraper().categoryList,
-        builder: (BuildContext context,
-                AsyncSnapshot<List<Map<String, String>>> snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? CircularProgressIndicator()
-                : ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        Text(snapshot.data[index]['name'])),
-      ),
+      body: ListView.builder(
+          itemCount: widget.categoryList.length,
+          itemBuilder: (BuildContext context, int index) =>
+              Text(widget.categoryList[index]['name'])),
     );
   }
 }
