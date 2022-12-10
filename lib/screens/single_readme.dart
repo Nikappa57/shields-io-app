@@ -63,24 +63,46 @@ class _SingleReadMeState extends State<SingleReadMe> {
   //       .update({'text': _textInput});
   // }
 
+  ShieldCategory _currentCategory = ShieldCategory.values[0];
+
+  _changeCategory(ShieldCategory category) {
+    if (category != _currentCategory)
+      setState(() {
+        _currentCategory = category;
+      });
+  }
+
+  // TODO: fix category empty
   @override
   Widget build(BuildContext context) {
-    final shields = Provider.of<Shields>(context).shields;
+    final shields = Provider.of<Shields>(context)
+        .shields
+        .where((element) => element.category == _currentCategory)
+        .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        //TODO: update this
-        title: Text(widget.title),
-        actions: [
-          ReadMeDropdownButton(_addShield),
-        ],
-      ),
-      body: TopNavBar(),
-      // ListView.builder(
-      //   itemCount: shields.length,
-      //   itemBuilder: (BuildContext context, int index) =>
-      //       Text(shields[index].name),
-      // ),
-    );
+        appBar: AppBar(
+          //TODO: update this
+          title: Text(widget.title),
+          actions: [
+            ReadMeDropdownButton(_addShield),
+          ],
+        ),
+        body: Column(
+          children: [
+            TopNavBar(_currentCategory, _changeCategory),
+            Expanded(
+              child: Container(
+                child: ListView.builder(
+                  itemCount: shields.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      Text(shields[index].name),
+                ),
+              ),
+            )
+          ],
+        )
+        // ,
+        );
   }
 }
