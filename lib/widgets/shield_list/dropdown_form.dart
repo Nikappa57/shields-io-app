@@ -31,6 +31,7 @@ class _DropdownFormState extends State<DropdownForm> {
         'value': color.name,
         'label': color.name,
         'icon': Container(
+          margin: EdgeInsets.only(right: 8),
           color: color.color,
           height: 10,
           width: 10,
@@ -44,6 +45,7 @@ class _DropdownFormState extends State<DropdownForm> {
         'value': style.name,
         'label': style.name,
         'icon': Container(
+          margin: EdgeInsets.only(right: 8),
           alignment: Alignment.bottomCenter,
           child: style.style,
           color: Colors.transparent,
@@ -58,7 +60,6 @@ class _DropdownFormState extends State<DropdownForm> {
   String _style = '';
   String _lable = '';
   String _message = '';
-  String _packageName = '';
 
   void _createNewShield(BuildContext context) async {
     print("NEW SHIELD");
