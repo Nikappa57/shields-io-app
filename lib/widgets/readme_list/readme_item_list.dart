@@ -8,13 +8,11 @@ class ReadMeItemList extends StatelessWidget {
     @required this.documentId,
     @required this.title,
     @required this.userId,
-    @required this.categoryList,
   });
 
   final String documentId;
   final String title;
   final String userId;
-  final List<Map<String, String>> categoryList;
 
   void _deleteReadme(DismissDirection d) {
     FirebaseFirestore.instance
@@ -79,12 +77,12 @@ class ReadMeItemList extends StatelessWidget {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SingleReadMe(
-                      documentId: documentId,
-                      title: title,
-                      categoryList: categoryList,
-                      userId: userId,
-                    )),
+              builder: (context) => SingleReadMe(
+                documentId: documentId,
+                title: title,
+                userId: userId,
+              ),
+            ),
           ),
           title: Text(
             title,

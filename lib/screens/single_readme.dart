@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:readme_editor/provider/shield.dart';
 import 'package:readme_editor/src/shield/scraper.dart';
 import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
@@ -11,12 +13,10 @@ class SingleReadMe extends StatefulWidget {
     @required this.documentId,
     @required this.title,
     @required this.userId,
-    @required this.categoryList,
   });
   final String documentId;
   final String title;
   final String userId;
-  final List<Map<String, String>> categoryList;
 
   @override
   State<SingleReadMe> createState() => _SingleReadMeState();
@@ -64,6 +64,8 @@ class _SingleReadMeState extends State<SingleReadMe> {
 
   @override
   Widget build(BuildContext context) {
+    final shields = Provider.of<Shields>(context).shields;
+
     return Scaffold(
       appBar: AppBar(
         //TODO: update this
@@ -73,9 +75,10 @@ class _SingleReadMeState extends State<SingleReadMe> {
         ],
       ),
       body: ListView.builder(
-          itemCount: widget.categoryList.length,
-          itemBuilder: (BuildContext context, int index) =>
-              Text(widget.categoryList[index]['name'])),
+        itemCount: shields.length,
+        itemBuilder: (BuildContext context, int index) =>
+            Text(shields[index].name),
+      ),
     );
   }
 }
