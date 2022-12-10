@@ -3,26 +3,24 @@ import 'package:web_scraper/web_scraper.dart';
 class Scraper {
   final webScraper = WebScraper('https://shields.io/');
 
-  Future<List<Map<String, String>>> get categoryList async {
-    List<Map<String, String>> categoryMap = [];
-    if (await webScraper.loadWebPage('/')) {
-      List<Map<String, dynamic>> elements =
-          webScraper.getElement('div > a', ['href']);
-      for (var e in elements) {
-        print(e);
-        final String link = e["attributes"]["href"];
-        print(link);
-        if (link.contains('/category/')) {
-          print("OK");
-          categoryMap.add({
-            'name': e['title'],
-            'link': link,
-          });
-        }
+  Future<List> getShieldsByCategory(String categoryLink) async {
+    print('link: /category/$categoryLink');
+    List<Map<String, String>> shields = [];
+    if (await webScraper.loadWebPage('/category/$categoryLink')) {
+      final List<Map<String, dynamic>> elementsImg =
+          webScraper.getElement('tr > td > span.OYSbn > img', ['alt', 'src']);
+      final List<Map<String, dynamic>> elementsCode = webScraper
+          .getElement('tr > td > code.snippet__StyledCode-rxmdgr-1', []);
+      if (elementsImg.length != elementsCode.length) return null;
+      final int len = elementsImg.length;
+      for (int i = 0; i < len; i++) {
+        shields.add({
+          'name': elementsImg[i]['attributes']['alt'],
+          'img': 'https://shields.io' + elementsImg[i]['attributes']['src'],
+          'code': elementsCode[i]['title'],
+        });
       }
     }
-    print("----------");
-    print(categoryMap);
-    return categoryMap;
+    return shields;
   }
 }
