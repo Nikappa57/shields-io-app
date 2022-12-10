@@ -1,13 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/provider/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
+import 'package:readme_editor/widgets/shield_list/shield_list_item.dart';
 import 'package:readme_editor/widgets/shield_list/topnavbar.dart';
 
 // TODO: confirm exit
+
+// TODO: add all shields tab
+// TODO: add favourites shields
+// TODO: navbar transparent
+// TODO: when add dafault none color
 
 class SingleReadMe extends StatefulWidget {
   SingleReadMe({
@@ -53,16 +60,6 @@ class _SingleReadMeState extends State<SingleReadMe> {
     // TODO
   }
 
-  // void _updateReadMe() async {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(user.uid)
-  //       .collection('readme')
-  //       .doc(widget.documentId)
-  //       .update({'text': _textInput});
-  // }
-
   ShieldCategory _currentCategory = ShieldCategory.values[0];
 
   _changeCategory(ShieldCategory category) {
@@ -72,6 +69,8 @@ class _SingleReadMeState extends State<SingleReadMe> {
       });
   }
 
+  _copyShield(ShieldModel shield) {}
+
   // TODO: fix category empty
   @override
   Widget build(BuildContext context) {
@@ -79,30 +78,32 @@ class _SingleReadMeState extends State<SingleReadMe> {
         .shields
         .where((element) => element.category == _currentCategory)
         .toList();
-
+    // TEst
+    print("MD:");
+    print(shields[0].markdown({'user': 'Nikappa57', 'repo': 'flask-forum'}));
+    //...
     return Scaffold(
-        appBar: AppBar(
-          //TODO: update this
-          title: Text(widget.title),
-          actions: [
-            ReadMeDropdownButton(_addShield),
-          ],
-        ),
-        body: Column(
-          children: [
-            TopNavBar(_currentCategory, _changeCategory),
-            Expanded(
-              child: Container(
-                child: ListView.builder(
-                  itemCount: shields.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      Text(shields[index].name),
-                ),
+      appBar: AppBar(
+        //TODO: update this
+        title: Text(widget.title),
+        actions: [
+          ReadMeDropdownButton(_addShield),
+        ],
+      ),
+      body: Column(
+        children: [
+          TopNavBar(_currentCategory, _changeCategory),
+          Expanded(
+            child: Container(
+              child: ListView.builder(
+                itemCount: shields.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    ShieldListItem(shields[index]),
               ),
-            )
-          ],
-        )
-        // ,
-        );
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
