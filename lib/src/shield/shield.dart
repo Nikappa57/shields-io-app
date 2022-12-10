@@ -3,8 +3,7 @@ import 'package:readme_editor/src/shield/usedShield.dart';
 
 enum ShieldType {
   static,
-  dependency,
-  used,
+  normal,
 }
 
 class Shield {
