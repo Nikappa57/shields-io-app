@@ -48,44 +48,44 @@ extension ColorExtension on ShieldCategory {
     return '/category/$suffix';
   }
 
-  Icon get icon {
+  IconData get icon {
     switch (this) {
       case ShieldCategory.Build:
-        return Icon(Icons.build);
+        return Icons.build;
       case ShieldCategory.CodeCoverage:
-        return Icon(Icons.grading_sharp);
+        return Icons.grading_sharp;
       case ShieldCategory.TestResults:
-        return Icon(Icons.check_box);
+        return Icons.check_box;
       case ShieldCategory.Analysis:
-        return Icon(Icons.equalizer);
+        return Icons.equalizer;
       case ShieldCategory.Chat:
-        return Icon(Icons.chat_bubble_outline);
+        return Icons.chat_bubble_outline;
       case ShieldCategory.Dependencies:
-        return Icon(Icons.developer_board_outlined);
+        return Icons.developer_board_outlined;
       case ShieldCategory.Size:
-        return Icon(Icons.file_copy_outlined);
+        return Icons.file_copy_outlined;
       case ShieldCategory.Downloads:
-        return Icon(Icons.download_outlined);
+        return Icons.download_outlined;
       case ShieldCategory.Funding:
-        return Icon(Icons.monetization_on_outlined);
+        return Icons.monetization_on_outlined;
       case ShieldCategory.IssueTracking:
-        return Icon(Icons.error_outline);
+        return Icons.error_outline;
       case ShieldCategory.License:
-        return Icon(Icons.privacy_tip_outlined);
+        return Icons.privacy_tip_outlined;
       case ShieldCategory.Rating:
-        return Icon(Icons.star_border);
+        return Icons.star_border;
       case ShieldCategory.Social:
-        return Icon(Icons.contact_phone_outlined);
+        return Icons.contact_phone_outlined;
       case ShieldCategory.Version:
-        return Icon(Icons.format_list_numbered);
+        return Icons.format_list_numbered;
       case ShieldCategory.PlatformSupport:
-        return Icon(Icons.support);
+        return Icons.support;
       case ShieldCategory.Monitoring:
-        return Icon(Icons.control_camera);
+        return Icons.control_camera;
       case ShieldCategory.Activity:
-        return Icon(Icons.accessibility_outlined);
+        return Icons.accessibility_outlined;
       case ShieldCategory.Other:
-        return Icon(Icons.plus_one_outlined);
+        return Icons.plus_one_outlined;
       default:
         return null;
     }

@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readme_editor/provider/shield.dart';
-import 'package:readme_editor/src/shield/scraper.dart';
+import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
+import 'package:readme_editor/widgets/shield_list/topnavbar.dart';
 
 // TODO: confirm exit
 
@@ -74,11 +75,12 @@ class _SingleReadMeState extends State<SingleReadMe> {
           ReadMeDropdownButton(_addShield),
         ],
       ),
-      body: ListView.builder(
-        itemCount: shields.length,
-        itemBuilder: (BuildContext context, int index) =>
-            Text(shields[index].name),
-      ),
+      body: TopNavBar(),
+      // ListView.builder(
+      //   itemCount: shields.length,
+      //   itemBuilder: (BuildContext context, int index) =>
+      //       Text(shields[index].name),
+      // ),
     );
   }
 }
