@@ -4,9 +4,8 @@ class Scraper {
   final webScraper = WebScraper('https://shields.io/');
 
   Future<List> getShieldsByCategory(String categoryLink) async {
-    print('link: /category/$categoryLink');
     List<Map<String, String>> shields = [];
-    if (await webScraper.loadWebPage('/category/$categoryLink')) {
+    if (await webScraper.loadWebPage(categoryLink)) {
       final List<Map<String, dynamic>> elementsImg =
           webScraper.getElement('tr > td > span.OYSbn > img', ['alt', 'src']);
       final List<Map<String, dynamic>> elementsCode = webScraper

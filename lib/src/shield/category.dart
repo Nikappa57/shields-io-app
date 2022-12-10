@@ -42,7 +42,7 @@ extension ColorExtension on ShieldCategory {
         suffix = 'platform-support';
         break;
       default:
-        suffix = describeEnum(this);
+        suffix = describeEnum(this).toLowerCase();
         break;
     }
     return '/category/$suffix';
