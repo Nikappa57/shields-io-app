@@ -84,6 +84,7 @@ class _SingleReadMeState extends State<SingleReadMe> {
   void _changeSearchBar() {
     setState(() {
       _showSearchBar = !_showSearchBar;
+      _searchText = '';
     });
   }
 
