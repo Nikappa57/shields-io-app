@@ -7,10 +7,7 @@ import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
 import 'package:readme_editor/widgets/shield_list/shield_list_item.dart';
 import 'package:readme_editor/widgets/shield_list/topnavbar.dart';
 
-// TODO: add all shields tab
 // TODO: add favourites shields
-// TODO: navbar transparent
-// TODO: when add dafault none color
 
 class SingleReadMe extends StatefulWidget {
   SingleReadMe({
@@ -48,16 +45,18 @@ class _SingleReadMeState extends State<SingleReadMe> {
         title: Text(widget.title),
         actions: [
           FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('users')
-                .doc(widget.userId)
-                .get(),
-            builder: (BuildContext context, AsyncSnapshot userData) =>
-                ReadMeDropdownButton(
-              username: userData.data.data()['username'],
-              repo: widget.title,
-            ),
-          ),
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(widget.userId)
+                  .get(),
+              builder: (BuildContext context, AsyncSnapshot userData) {
+                if (userData.connectionState == ConnectionState.waiting)
+                  return Container();
+                return ReadMeDropdownButton(
+                  username: userData.data.data()['username'],
+                  repo: widget.title,
+                );
+              }),
         ],
       ),
       body: Column(
