@@ -57,7 +57,7 @@ class ReadMeItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: const Key('title'),
+      key: ValueKey(documentId),
       direction: DismissDirection.endToStart,
       background: Container(
         child: const Text(
