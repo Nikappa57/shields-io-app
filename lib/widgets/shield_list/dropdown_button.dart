@@ -6,12 +6,10 @@ class ReadMeDropdownButton extends StatelessWidget {
   ReadMeDropdownButton({
     @required this.username,
     @required this.repo,
-    @required this.showFavourite,
   });
 
   final String username;
   final String repo;
-  final void Function() showFavourite;
 
   void _createShield(
     BuildContext context,
@@ -50,8 +48,6 @@ class ReadMeDropdownButton extends StatelessWidget {
       onChanged: (item) {
         if (item == 'static') {
           _createShield(context);
-        } else if (item == 'favourites') {
-          showFavourite();
         }
       },
       items: [
@@ -71,23 +67,6 @@ class ReadMeDropdownButton extends StatelessWidget {
             ),
           ),
           value: 'static',
-        ),
-        DropdownMenuItem(
-          child: Container(
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star,
-                  color: Theme.of(context).primaryColor,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                const Text("Favourites"),
-              ],
-            ),
-          ),
-          value: 'favourites',
         ),
       ],
     );
