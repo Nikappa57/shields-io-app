@@ -22,31 +22,38 @@ class Shields extends ChangeNotifier {
         .collection('favouriteShield')
         .get();
 
-    Future.forEach(ShieldCategory.values, (ShieldCategory category) async {
-      // get shields list in category
-      final List<Map<String, String>> categoryShields =
-          await scraper.getShieldsByCategory(category.link);
+    var futures = <Future>[];
 
-      for (Map<String, String> shieldElement in categoryShields) {
-        if (shieldElement['name'] != null &&
-            shieldElement['code'] != null &&
-            shieldElement['img'] != null) {
-          final bool favourite = shieldData.docs
-              .where((element) =>
-                  element.data()['shield-code'] == shieldElement['code'])
-              .isNotEmpty;
-          _shields.add(
-            ShieldModel(
-              name: shieldElement['name'],
-              code: shieldElement['code'],
-              previewImgUrl: shieldElement['img'].replaceAll(
-                  'https://shields.io', 'https://raster.shields.io'),
-              category: category,
-              favourite: favourite,
-            ),
-          );
+    for (ShieldCategory category in ShieldCategory.values) {
+      var thread = new Future(() async {
+        // get shields list in category
+        final List<Map<String, String>> categoryShields =
+            await scraper.getShieldsByCategory(category.link);
+
+        for (Map<String, String> shieldElement in categoryShields) {
+          if (shieldElement['name'] != null &&
+              shieldElement['code'] != null &&
+              shieldElement['img'] != null) {
+            final bool favourite = shieldData.docs
+                .where((element) =>
+                    element.data()['shield-code'] == shieldElement['code'])
+                .isNotEmpty;
+            _shields.add(
+              ShieldModel(
+                name: shieldElement['name'],
+                code: shieldElement['code'],
+                previewImgUrl: shieldElement['img'].replaceAll(
+                    'https://shields.io', 'https://raster.shields.io'),
+                category: category,
+                favourite: favourite,
+              ),
+            );
+          }
         }
-      }
-    });
+      });
+      futures.add(thread);
+    }
+
+    await Future.wait(futures);
   }
 }
