@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/src/shield/colors.dart';
-import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/src/shield/styles.dart';
 import 'package:select_form_field/select_form_field.dart';
 
-// TODO: fix style img
-// TODO: add other shields
-
 class DropdownForm extends StatefulWidget {
-  DropdownForm(this.shieldType, this.addShield);
-
-  final void Function({
-    String lable,
-    String message,
-    String packageName,
-    String color,
-    @required String style,
-    @required ShieldType shieldType,
-  }) addShield;
-  final ShieldType shieldType;
-
+  DropdownForm({
+    @required this.shield,
+    @required this.username,
+    @required this.repo,
+  });
+  final String username;
+  final String repo;
+  final ShieldModel shield;
   @override
   _DropdownFormState createState() => _DropdownFormState();
 }
@@ -56,34 +50,38 @@ class _DropdownFormState extends State<DropdownForm> {
   }.toList();
 
   final _formKey = GlobalKey<FormState>();
-  String _color = '';
-  String _style = '';
-  String _lable = '';
-  String _message = '';
+  Map<String, String> _args;
 
-  void _createNewShield(BuildContext context) async {
-    print("NEW SHIELD");
-    if (widget.shieldType == ShieldType.static) {
-      widget.addShield(
-        color: _color,
-        message: _message,
-        lable: _lable,
-        style: _style,
-        shieldType: widget.shieldType,
-      );
-    }
-
-    Navigator.of(context).pop();
+  @override
+  void initState() {
+    super.initState();
+    _args = {
+      'user': widget.username,
+      'repo': widget.repo,
+    };
   }
 
-  //TODO: fix pixel owerflow when display error message
+  bool get _showImg {
+    if (widget.shield.args.length == 0) return true;
+    if (_args.keys.length - 2 >=
+        widget.shield.args.where((arg) => !arg.endsWith('*')).length)
+      return false;
+    _args.values.forEach((element) {
+      if (!element.endsWith('*')) {
+        if (element == null) return false;
+        if (element.isEmpty) return false;
+      }
+    });
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 25,
-        right: 12,
-        left: 12,
+      padding: const EdgeInsets.symmetric(
+        vertical: 25,
+        horizontal: 12,
       ),
       child: Column(
         children: [
@@ -92,39 +90,26 @@ class _DropdownFormState extends State<DropdownForm> {
               key: _formKey,
               child: Column(
                 children: [
-                  if (this.widget.shieldType == ShieldType.static)
+                  for (String arg in widget.shield.args)
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'lable',
-                        prefixIcon: Icon(Icons.title),
+                        labelText: arg,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a lable';
-                        }
-                        return null;
-                      },
-                      onSaved: (val) => _lable = val,
-                      textInputAction: TextInputAction.next,
-                    ),
-                  if (this.widget.shieldType == ShieldType.static)
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'message',
-                        prefixIcon: Icon(Icons.textsms_outlined),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a message';
+                          return 'data required';
                         }
                         return null;
                       },
                       textInputAction: TextInputAction.next,
-                      onSaved: (val) => _message = val,
+                      onChanged: (val) {
+                        setState(() {
+                          _args[arg] = val;
+                        });
+                      },
                     ),
                   SelectFormField(
                     type: SelectFormFieldType.dropdown,
-                    initialValue: ShieldColor.values[0].name,
                     icon: Icon(
                       Icons.color_lens_outlined,
                       color: Theme.of(context).primaryColor,
@@ -137,11 +122,15 @@ class _DropdownFormState extends State<DropdownForm> {
                     },
                     labelText: 'Color',
                     items: _colorsValue,
-                    onSaved: (val) => _color = val,
+                    onChanged: (val) {
+                      setState(() {
+                        widget.shield.color = ShieldColor.values
+                            .firstWhere((color) => color.name == val);
+                      });
+                    },
                   ),
                   SelectFormField(
                     type: SelectFormFieldType.dropdown,
-                    initialValue: ShieldStyle.values[0].name,
                     icon: Icon(
                       Icons.style_outlined,
                       color: Theme.of(context).primaryColor,
@@ -154,18 +143,47 @@ class _DropdownFormState extends State<DropdownForm> {
                     },
                     labelText: 'Style',
                     items: _styleValue,
-                    onSaved: (val) => _style = val,
+                    onChanged: (val) {
+                      setState(() {
+                        widget.shield.style = ShieldStyle.values
+                            .firstWhere((style) => style.name == val);
+                      });
+                    },
                   ),
                   const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        _createNewShield(context);
-                      }
-                    },
-                    child: Text("Add"),
-                  ),
+                  if (_showImg)
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Clipboard.setData(
+                            ClipboardData(text: widget.shield.markdown(_args)));
+
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Shield copied to clipboard"),
+                          backgroundColor: Colors.green,
+                        ));
+                        print("COPY: ${widget.shield.markdown(_args)}");
+                      },
+                      child: FadeInImage(
+                        fit: BoxFit.contain,
+                        placeholder: AssetImage('assets/img/shield.png'),
+                        image: NetworkImage(
+                          widget.shield
+                              .mdLink(_args)
+                              .replaceFirst('img.', 'raster.'),
+                        ),
+                      ),
+                    ),
+                  if (!_showImg) Image.asset('assets/img/shield.png'),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     if (_formKey.currentState.validate()) {
+                  //       _formKey.currentState.save();
+                  //       _copyShield(context);
+                  //     }
+                  //   },
+                  //   child: Text("Add"),
+                  // ),
                 ],
               )),
         ],

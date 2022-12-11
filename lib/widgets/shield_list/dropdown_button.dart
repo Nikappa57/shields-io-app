@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:readme_editor/src/shield/shield.dart';
+import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
 
 class ReadMeDropdownButton extends StatelessWidget {
-  ReadMeDropdownButton(this.addShield);
-  final void Function({
-    String lable,
-    String message,
-    String packageName,
-    String color,
-    @required String style,
-    @required ShieldType shieldType,
-  }) addShield;
+  ReadMeDropdownButton({
+    @required this.username,
+    @required this.repo,
+  });
+
+  final String username;
+  final String repo;
 
   void _createShield(
     BuildContext context,
-    ShieldType shieldType,
   ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -29,8 +26,12 @@ class ReadMeDropdownButton extends StatelessWidget {
       builder: (_) => GestureDetector(
         onTap: () {},
         behavior: HitTestBehavior.opaque,
-        child:
-            SingleChildScrollView(child: DropdownForm(shieldType, addShield)),
+        child: SingleChildScrollView(
+            child: DropdownForm(
+          shield: staitcShield,
+          username: username,
+          repo: repo,
+        )),
       ),
     );
   }
@@ -40,12 +41,12 @@ class ReadMeDropdownButton extends StatelessWidget {
     return DropdownButton(
       underline: Container(),
       icon: Icon(
-        Icons.shield,
+        Icons.more_vert,
         color: Theme.of(context).primaryIconTheme.color,
       ),
       onChanged: (item) {
         if (item == 'static') {
-          _createShield(context, ShieldType.static);
+          _createShield(context);
         }
       },
       items: [
