@@ -20,6 +20,7 @@ enum ShieldCategory {
   Monitoring,
   Activity,
   Other,
+  static,
 }
 
 extension ColorExtension on ShieldCategory {

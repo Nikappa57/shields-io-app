@@ -1,14 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/colors.dart';
-import 'package:readme_editor/src/shield/shield.dart';
 import 'package:readme_editor/src/shield/styles.dart';
 
 class ShieldModel {
   String name;
-  String lable; // only for static shield
-  String text; // only for static shield
-  ShieldType type;
   ShieldStyle style;
   ShieldColor color;
   ShieldCategory category;
@@ -17,13 +13,57 @@ class ShieldModel {
 
   ShieldModel({
     @required this.name,
-    this.lable,
-    this.text,
     @required this.code,
-    @required this.type,
     this.style,
     this.color,
     @required this.category,
     @required this.previewImgUrl,
   });
+
+  String staticShield(Map<String, String> shieldArgs) {
+    return "![${shieldArgs["lable"]}](https://img.shields.io/badge/${shieldArgs["lable"]}-${shieldArgs["message"]}-${this.color}?style=${this.style})";
+  }
+
+  List<String> get args {
+    final arg = RegExp(r'\/:([a-zA-Z]+\*?)');
+    return arg
+        .allMatches(this.code)
+        .map((m) => m.group(1))
+        .where((element) => element != 'user' && element != 'repo')
+        .toList();
+  }
+
+  String mdLink(Map<String, String> shieldArgs) {
+    String _linkSuffix = this.code;
+    shieldArgs.keys.forEach((key) {
+      _linkSuffix = _linkSuffix.replaceAll(":$key", shieldArgs[key]);
+    });
+    String _link = 'https://img.shields.io$_linkSuffix';
+    if (this.color != null || this.style != null) {
+      if (this.style != null) {
+        _link += '?style=${this.style.name}'; // add style
+      } else if (this.color != null) {
+        return _link + '?color=${this.color.name}'; // only color
+      }
+      if (this.color != null) {
+        return _link + '&color=${this.color.name}'; // style and color
+      } else {
+        return _link; // only style
+      }
+    } else {
+      return _link; // no style or color
+    }
+  }
+
+  String markdown(Map<String, String> shieldArgs) {
+    final String _link = mdLink(shieldArgs);
+    return '![${this.name}]($_link)';
+  }
 }
+
+ShieldModel staitcShield = ShieldModel(
+  name: 'static',
+  code: '/badge/:title-:text-:color',
+  category: ShieldCategory.static,
+  previewImgUrl: 'https://raster.shields.io/badge/title-text-red',
+);
