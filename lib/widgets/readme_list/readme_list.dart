@@ -36,28 +36,12 @@ class ReadMeList extends StatelessWidget {
           return ListView.builder(
               itemCount: files.length,
               itemBuilder: (context, index) {
-                return FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(user.uid)
-                        .get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> userData) {
-                      if (userData.connectionState == ConnectionState.waiting)
-                        return Center(
-                          child: SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      return ReadMeItemList(
-                        documentId: files[index].id,
-                        title: files[index].data()['project-name'],
-                        userId: user.uid,
-                        username: userData.data.data()['username'],
-                      );
-                    });
+                return ReadMeItemList(
+                  documentId: files[index].id,
+                  title: files[index].data()['project-name'],
+                  userId: user.uid,
+                  username: files[index].data()['user'],
+                );
               });
         });
   }

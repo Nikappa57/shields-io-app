@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readme_editor/screens/single_readme.dart';
-import 'package:readme_editor/widgets/readme_list/rename_readme.dart';
+import 'package:readme_editor/widgets/readme_list/new_readme.dart';
 
 class ReadMeItemList extends StatelessWidget {
   ReadMeItemList({
@@ -23,6 +24,34 @@ class ReadMeItemList extends StatelessWidget {
         .collection('readme')
         .doc(documentId)
         .delete();
+  }
+
+  void _editReadMe({
+    @required BuildContext context,
+    @required String title,
+    @required String documentId,
+    @required String user,
+  }) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: const BorderRadius.only(
+          topLeft: const Radius.circular(45.0),
+          topRight: const Radius.circular(45.0),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (_) => GestureDetector(
+        onTap: () {},
+        behavior: HitTestBehavior.opaque,
+        child: SingleChildScrollView(
+            child: NewReadMe(
+          user: user,
+          title: title,
+          documentId: documentId,
+        )),
+      ),
+    );
   }
 
   @override
@@ -93,18 +122,16 @@ class ReadMeItemList extends StatelessWidget {
             ),
           ),
           trailing: IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: Theme.of(context).accentIconTheme.color,
-            ),
-            onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: RenameReadMe(documentId, title),
-                  );
-                }),
-          ),
+              icon: Icon(
+                Icons.edit,
+                color: Theme.of(context).accentIconTheme.color,
+              ),
+              onPressed: () => _editReadMe(
+                    context: context,
+                    title: title,
+                    documentId: documentId,
+                    user: username,
+                  )),
         ),
       ),
     );
