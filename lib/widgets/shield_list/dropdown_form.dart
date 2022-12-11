@@ -10,7 +10,9 @@ class DropdownForm extends StatefulWidget {
     @required this.shield,
     @required this.username,
     @required this.repo,
+    this.isStatic = false,
   });
+  final bool isStatic;
   final String username;
   final String repo;
   final ShieldModel shield;
@@ -59,20 +61,23 @@ class _DropdownFormState extends State<DropdownForm> {
       'user': widget.username,
       'repo': widget.repo,
     };
+    if (widget.isStatic) {
+      widget.shield.color = ShieldColor.values[0];
+      widget.shield.style = ShieldStyle.values[0];
+    }
   }
 
   bool get _showImg {
     if (widget.shield.args.length == 0) return true;
-    if (_args.keys.length - 2 >=
+    if (_args.keys.length - 2 <
         widget.shield.args.where((arg) => !arg.endsWith('*')).length)
       return false;
-    _args.values.forEach((element) {
+    for (String element in _args.values) {
       if (!element.endsWith('*')) {
         if (element == null) return false;
         if (element.isEmpty) return false;
       }
-    });
-
+    }
     return true;
   }
 
@@ -95,12 +100,6 @@ class _DropdownFormState extends State<DropdownForm> {
                       decoration: InputDecoration(
                         labelText: arg,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'data required';
-                        }
-                        return null;
-                      },
                       textInputAction: TextInputAction.next,
                       onChanged: (val) {
                         setState(() {
@@ -110,16 +109,12 @@ class _DropdownFormState extends State<DropdownForm> {
                     ),
                   SelectFormField(
                     type: SelectFormFieldType.dropdown,
+                    initialValue:
+                        widget.isStatic ? ShieldColor.values[0].name : null,
                     icon: Icon(
                       Icons.color_lens_outlined,
                       color: Theme.of(context).primaryColor,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a color';
-                      }
-                      return null;
-                    },
                     labelText: 'Color',
                     items: _colorsValue,
                     onChanged: (val) {
@@ -131,16 +126,12 @@ class _DropdownFormState extends State<DropdownForm> {
                   ),
                   SelectFormField(
                     type: SelectFormFieldType.dropdown,
+                    initialValue:
+                        widget.isStatic ? ShieldStyle.values[0].name : null,
                     icon: Icon(
                       Icons.style_outlined,
                       color: Theme.of(context).primaryColor,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a style';
-                      }
-                      return null;
-                    },
                     labelText: 'Style',
                     items: _styleValue,
                     onChanged: (val) {
@@ -155,35 +146,35 @@ class _DropdownFormState extends State<DropdownForm> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
-                        Clipboard.setData(
-                            ClipboardData(text: widget.shield.markdown(_args)));
+                        Clipboard.setData(ClipboardData(
+                            text: widget.shield
+                                .markdown(_args, isStatic: widget.isStatic)));
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Shield copied to clipboard"),
                           backgroundColor: Colors.green,
                         ));
-                        print("COPY: ${widget.shield.markdown(_args)}");
                       },
                       child: FadeInImage(
                         fit: BoxFit.contain,
+                        height: 30,
                         placeholder: AssetImage('assets/img/shield.png'),
                         image: NetworkImage(
-                          widget.shield
-                              .mdLink(_args)
-                              .replaceFirst('img.', 'raster.'),
+                          widget.isStatic
+                              ? widget.shield
+                                  .staticShieldLink(_args)
+                                  .replaceFirst('img.', 'raster.')
+                              : widget.shield
+                                  .mdLink(_args)
+                                  .replaceFirst('img.', 'raster.'),
                         ),
                       ),
                     ),
-                  if (!_showImg) Image.asset('assets/img/shield.png'),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     if (_formKey.currentState.validate()) {
-                  //       _formKey.currentState.save();
-                  //       _copyShield(context);
-                  //     }
-                  //   },
-                  //   child: Text("Add"),
-                  // ),
+                  if (!_showImg)
+                    Image.asset(
+                      'assets/img/shield.png',
+                      height: 30,
+                    ),
                 ],
               )),
         ],

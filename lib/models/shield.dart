@@ -20,16 +20,20 @@ class ShieldModel {
     @required this.previewImgUrl,
   });
 
-  String staticShield(Map<String, String> shieldArgs) {
-    return "![${shieldArgs["lable"]}](https://img.shields.io/badge/${shieldArgs["lable"]}-${shieldArgs["message"]}-${this.color}?style=${this.style})";
+  String staticShieldLink(Map<String, String> shieldArgs) {
+    String _link =
+        "https://img.shields.io/badge/${shieldArgs["title"]}-${shieldArgs["text"]}-${this.color.name}";
+    if (this.style != null) _link += '?style=${this.style.name}';
+    return _link;
   }
 
   List<String> get args {
-    final arg = RegExp(r'\/:([a-zA-Z]+\*?)');
+    final arg = RegExp(r':([a-zA-Z]+\*?)');
     return arg
         .allMatches(this.code)
         .map((m) => m.group(1))
-        .where((element) => element != 'user' && element != 'repo')
+        .where((element) =>
+            element != 'user' && element != 'repo' && element != 'color')
         .toList();
   }
 
@@ -55,8 +59,9 @@ class ShieldModel {
     }
   }
 
-  String markdown(Map<String, String> shieldArgs) {
-    final String _link = mdLink(shieldArgs);
+  String markdown(Map<String, String> shieldArgs, {bool isStatic = false}) {
+    final String _link =
+        isStatic ? staticShieldLink(shieldArgs) : mdLink(shieldArgs);
     return '![${this.name}]($_link)';
   }
 }

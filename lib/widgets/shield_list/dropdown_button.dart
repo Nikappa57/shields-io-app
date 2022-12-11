@@ -31,6 +31,7 @@ class ReadMeDropdownButton extends StatelessWidget {
           shield: staitcShield,
           username: username,
           repo: repo,
+          isStatic: true,
         )),
       ),
     );
@@ -47,6 +48,8 @@ class ReadMeDropdownButton extends StatelessWidget {
       onChanged: (item) {
         if (item == 'static') {
           _createShield(context);
+        } else if (item == 'favourites') {
+          // TODO
         }
       },
       items: [
@@ -78,11 +81,11 @@ class ReadMeDropdownButton extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                const Text("Most used Shields"),
+                const Text("Favourites"),
               ],
             ),
           ),
-          value: 'used',
+          value: 'favourites',
         ),
       ],
     );
