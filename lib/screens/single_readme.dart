@@ -6,6 +6,7 @@ import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/provider/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
+import 'package:readme_editor/widgets/shield_list/search_form.dart';
 import 'package:readme_editor/widgets/shield_list/shield_list_item.dart';
 import 'package:readme_editor/widgets/shield_list/topnavbar.dart';
 
@@ -26,6 +27,8 @@ class SingleReadMe extends StatefulWidget {
 class _SingleReadMeState extends State<SingleReadMe> {
   ShieldCategory _currentCategory = ShieldCategory.values[0];
   bool _showOnlyFavourites = false;
+  bool _showSearchBar = false;
+  String _searchText = '';
 
   _changeCategory(ShieldCategory category) {
     if (category != _currentCategory)
@@ -78,6 +81,18 @@ class _SingleReadMeState extends State<SingleReadMe> {
     });
   }
 
+  void _changeSearchBar() {
+    setState(() {
+      _showSearchBar = !_showSearchBar;
+    });
+  }
+
+  void _onSearching(String text) {
+    setState(() {
+      _searchText = text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ShieldModel> shields;
@@ -91,6 +106,9 @@ class _SingleReadMeState extends State<SingleReadMe> {
           .toList();
     if (_showOnlyFavourites)
       shields = shields.where((shield) => shield.favourite).toList();
+    if (_showSearchBar)
+      shields =
+          shields.where((shield) => shield.name.contains(_searchText)).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -99,12 +117,14 @@ class _SingleReadMeState extends State<SingleReadMe> {
           ReadMeDropdownButton(
             username: widget.username,
             repo: widget.title,
+            changeSearchBar: _changeSearchBar,
           )
         ],
       ),
       body: Column(
         children: [
           TopNavBar(_currentCategory, _changeCategory),
+          if (_showSearchBar) ShearchForm(_changeSearchBar, _onSearching),
           Expanded(
             child: Container(
               child: ListView.builder(

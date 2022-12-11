@@ -3,13 +3,14 @@ import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
 
 class ReadMeDropdownButton extends StatelessWidget {
-  ReadMeDropdownButton({
-    @required this.username,
-    @required this.repo,
-  });
+  ReadMeDropdownButton(
+      {@required this.username,
+      @required this.repo,
+      @required this.changeSearchBar});
 
   final String username;
   final String repo;
+  final void Function() changeSearchBar;
 
   void _createShield(
     BuildContext context,
@@ -48,6 +49,8 @@ class ReadMeDropdownButton extends StatelessWidget {
       onChanged: (item) {
         if (item == 'static') {
           _createShield(context);
+        } else if (item == 'search') {
+          changeSearchBar();
         }
       },
       items: [
@@ -67,6 +70,23 @@ class ReadMeDropdownButton extends StatelessWidget {
             ),
           ),
           value: 'static',
+        ),
+        DropdownMenuItem(
+          child: Container(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.search,
+                  color: Theme.of(context).primaryColor,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Text("Search"),
+              ],
+            ),
+          ),
+          value: 'search',
         ),
       ],
     );
