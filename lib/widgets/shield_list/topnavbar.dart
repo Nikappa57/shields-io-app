@@ -10,16 +10,16 @@ class TopNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
+      height: 53,
       child: ListView.builder(
-        itemCount: ShieldCategory.values.length,
+        itemCount: ShieldCategory.values.length - 1, // - 1 for static
         itemBuilder: (BuildContext context, int index) => InkWell(
           onTap: () => changeCategory(ShieldCategory.values[index]),
           child: Card(
             elevation: 3,
             color: Theme.of(context).accentColor,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Center(
                   child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
