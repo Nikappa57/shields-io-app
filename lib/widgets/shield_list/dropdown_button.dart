@@ -6,10 +6,12 @@ class ReadMeDropdownButton extends StatelessWidget {
   ReadMeDropdownButton({
     @required this.username,
     @required this.repo,
+    @required this.showFavourite,
   });
 
   final String username;
   final String repo;
+  final void Function() showFavourite;
 
   void _createShield(
     BuildContext context,
@@ -49,7 +51,7 @@ class ReadMeDropdownButton extends StatelessWidget {
         if (item == 'static') {
           _createShield(context);
         } else if (item == 'favourites') {
-          // TODO
+          showFavourite();
         }
       },
       items: [

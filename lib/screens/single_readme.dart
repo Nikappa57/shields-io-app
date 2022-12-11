@@ -25,6 +25,7 @@ class SingleReadMe extends StatefulWidget {
 
 class _SingleReadMeState extends State<SingleReadMe> {
   ShieldCategory _currentCategory = ShieldCategory.values[0];
+  bool _showOnlyFavourites = false;
 
   _changeCategory(ShieldCategory category) {
     if (category != _currentCategory)
@@ -71,12 +72,20 @@ class _SingleReadMeState extends State<SingleReadMe> {
     });
   }
 
+  void _showFavourite() {
+    setState(() {
+      _showOnlyFavourites = !_showOnlyFavourites;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final shields = Provider.of<Shields>(context)
+    List<ShieldModel> shields = Provider.of<Shields>(context)
         .shields
         .where((element) => element.category == _currentCategory)
         .toList();
+    if (_showOnlyFavourites)
+      shields = shields.where((shield) => shield.favourite).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -85,6 +94,7 @@ class _SingleReadMeState extends State<SingleReadMe> {
           ReadMeDropdownButton(
             username: widget.username,
             repo: widget.title,
+            showFavourite: _showFavourite,
           )
         ],
       ),
