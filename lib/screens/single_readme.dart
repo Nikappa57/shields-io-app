@@ -9,8 +9,6 @@ import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
 import 'package:readme_editor/widgets/shield_list/shield_list_item.dart';
 import 'package:readme_editor/widgets/shield_list/topnavbar.dart';
 
-// TODO: add favourites shields
-
 class SingleReadMe extends StatefulWidget {
   SingleReadMe({
     @required this.documentId,
@@ -33,6 +31,44 @@ class _SingleReadMeState extends State<SingleReadMe> {
       setState(() {
         _currentCategory = category;
       });
+  }
+
+  Future<void> _addToFavourites(ShieldModel shield) async {
+    if (shield.favourite) return null;
+    final user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users/${user.uid}/favouriteShield')
+        .add({
+      'shield-code': shield.code,
+      'create-at': Timestamp.now(),
+    });
+
+    setState(() {
+      shield.favourite = true;
+    });
+  }
+
+  Future<void> _removeFromFavourites(ShieldModel shield) async {
+    if (!shield.favourite) return null;
+
+    final user = FirebaseAuth.instance.currentUser;
+    final shieldData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('readme')
+        .where('shield-code', isEqualTo: shield.code)
+        .get();
+    if (shieldData.docs.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('readme')
+          .doc(shieldData.docs.first.id)
+          .delete();
+    }
+    setState(() {
+      shield.favourite = false;
+    });
   }
 
   @override
@@ -61,10 +97,11 @@ class _SingleReadMeState extends State<SingleReadMe> {
                   itemCount: shields.length,
                   itemBuilder: (BuildContext context, int index) =>
                       ShieldListItem(
-                        shield: shields[index],
-                        repo: widget.title,
-                        username: widget.username,
-                      )),
+                          shield: shields[index],
+                          repo: widget.title,
+                          username: widget.username,
+                          addToFavourites: _addToFavourites,
+                          removeFromFavourites: _removeFromFavourites)),
             ),
           )
         ],

@@ -7,11 +7,15 @@ class ShieldListItem extends StatelessWidget {
     @required this.shield,
     @required this.username,
     @required this.repo,
+    @required this.addToFavourites,
+    @required this.removeFromFavourites,
   });
 
   final String username;
   final String repo;
   final ShieldModel shield;
+  final Future<void> Function(ShieldModel shield) addToFavourites;
+  final Future<void> Function(ShieldModel shield) removeFromFavourites;
 
   void _createShield(BuildContext context) {
     showModalBottomSheet(
@@ -48,9 +52,19 @@ class ShieldListItem extends StatelessWidget {
       child: ListTile(
         onTap: () => _createShield(context),
         title: Text(shield.name),
+        trailing: IconButton(
+            icon: Icon(
+                shield.favourite ? Icons.star : Icons.star_border_outlined),
+            onPressed: () {
+              if (shield.favourite) {
+                removeFromFavourites(shield);
+              } else {
+                addToFavourites(shield);
+              }
+            }),
         subtitle: Container(
           margin: EdgeInsets.only(top: 8),
-          height: 20,
+          height: 25,
           child: FadeInImage(
             fit: BoxFit.contain,
             placeholder: AssetImage('assets/img/shield.png'),

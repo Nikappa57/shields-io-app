@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/colors.dart';
@@ -5,11 +7,12 @@ import 'package:readme_editor/src/shield/styles.dart';
 
 class ShieldModel {
   String name;
+  String code;
   ShieldStyle style;
   ShieldColor color;
   ShieldCategory category;
-  String code;
   String previewImgUrl;
+  bool favourite;
 
   ShieldModel({
     @required this.name,
@@ -18,6 +21,7 @@ class ShieldModel {
     this.color,
     @required this.category,
     @required this.previewImgUrl,
+    @required this.favourite,
   });
 
   String staticShieldLink(Map<String, String> shieldArgs) {
@@ -71,4 +75,5 @@ ShieldModel staitcShield = ShieldModel(
   code: '/badge/:title-:text-:color',
   category: ShieldCategory.static,
   previewImgUrl: 'https://raster.shields.io/badge/title-text-red',
+  favourite: false,
 );
