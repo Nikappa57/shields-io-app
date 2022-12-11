@@ -80,10 +80,15 @@ class _SingleReadMeState extends State<SingleReadMe> {
 
   @override
   Widget build(BuildContext context) {
-    List<ShieldModel> shields = Provider.of<Shields>(context)
-        .shields
-        .where((element) => element.category == _currentCategory)
-        .toList();
+    List<ShieldModel> shields;
+
+    if (_currentCategory == ShieldCategory.All)
+      shields = Provider.of<Shields>(context).shields;
+    else
+      shields = Provider.of<Shields>(context)
+          .shields
+          .where((element) => element.category == _currentCategory)
+          .toList();
     if (_showOnlyFavourites)
       shields = shields.where((shield) => shield.favourite).toList();
 
@@ -94,7 +99,6 @@ class _SingleReadMeState extends State<SingleReadMe> {
           ReadMeDropdownButton(
             username: widget.username,
             repo: widget.title,
-            showFavourite: _showFavourite,
           )
         ],
       ),
@@ -115,6 +119,10 @@ class _SingleReadMeState extends State<SingleReadMe> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showFavourite,
+        child: Icon(_showOnlyFavourites ? Icons.star : Icons.star_border),
       ),
     );
   }

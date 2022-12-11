@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum ShieldCategory {
+  All,
   Build,
   CodeCoverage,
   TestResults,
@@ -51,6 +52,8 @@ extension ColorExtension on ShieldCategory {
 
   IconData get icon {
     switch (this) {
+      case ShieldCategory.All:
+        return Icons.list_alt;
       case ShieldCategory.Build:
         return Icons.build;
       case ShieldCategory.CodeCoverage:
