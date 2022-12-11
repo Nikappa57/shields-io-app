@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/provider/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
@@ -13,11 +15,11 @@ class SingleReadMe extends StatefulWidget {
   SingleReadMe({
     @required this.documentId,
     @required this.title,
-    @required this.userId,
+    @required this.username,
   });
   final String documentId;
   final String title;
-  final String userId;
+  final String username;
 
   @override
   State<SingleReadMe> createState() => _SingleReadMeState();
@@ -44,44 +46,27 @@ class _SingleReadMeState extends State<SingleReadMe> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(widget.userId)
-                  .get(),
-              builder: (BuildContext context, AsyncSnapshot userData) {
-                if (userData.connectionState == ConnectionState.waiting)
-                  return Container();
-                return ReadMeDropdownButton(
-                  username: userData.data.data()['username'],
-                  repo: widget.title,
-                );
-              }),
+          ReadMeDropdownButton(
+            username: widget.username,
+            repo: widget.title,
+          )
         ],
       ),
       body: Column(
         children: [
           TopNavBar(_currentCategory, _changeCategory),
           Expanded(
-              child: FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('users')
-                .doc(widget.userId)
-                .get(),
-            builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> userData) =>
-                Container(
+            child: Container(
               child: ListView.builder(
-                itemCount: shields.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    ShieldListItem(
-                  shield: shields[index],
-                  repo: widget.title,
-                  username: userData.data.data()['username'],
-                ),
-              ),
+                  itemCount: shields.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      ShieldListItem(
+                        shield: shields[index],
+                        repo: widget.title,
+                        username: widget.username,
+                      )),
             ),
-          ))
+          )
         ],
       ),
     );

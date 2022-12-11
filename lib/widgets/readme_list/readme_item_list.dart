@@ -8,11 +8,13 @@ class ReadMeItemList extends StatelessWidget {
     @required this.documentId,
     @required this.title,
     @required this.userId,
+    @required this.username,
   });
 
   final String documentId;
   final String title;
   final String userId;
+  final String username;
 
   void _deleteReadme(DismissDirection d) {
     FirebaseFirestore.instance
@@ -80,7 +82,7 @@ class ReadMeItemList extends StatelessWidget {
               builder: (context) => SingleReadMe(
                 documentId: documentId,
                 title: title,
-                userId: userId,
+                username: username,
               ),
             ),
           ),

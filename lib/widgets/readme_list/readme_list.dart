@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:readme_editor/widgets/readme_list/readme_item_list.dart';
 
 // TODO: pik existing project and add to db
-// TODO: possibility to commit readme
-// TODO: add diff check
 
 // TODO: show only user readme and add to firebase perms that
+
+// TODO: can add new repo with an other username
+// TODO: add all github checks
 
 class ReadMeList extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser;
@@ -35,11 +36,28 @@ class ReadMeList extends StatelessWidget {
           return ListView.builder(
               itemCount: files.length,
               itemBuilder: (context, index) {
-                return ReadMeItemList(
-                  documentId: files[index].id,
-                  title: files[index].data()['project-name'],
-                  userId: user.uid,
-                );
+                return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(user.uid)
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> userData) {
+                      if (userData.connectionState == ConnectionState.waiting)
+                        return Center(
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      return ReadMeItemList(
+                        documentId: files[index].id,
+                        title: files[index].data()['project-name'],
+                        userId: user.uid,
+                        username: userData.data.data()['username'],
+                      );
+                    });
               });
         });
   }
