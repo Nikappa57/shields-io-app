@@ -25,8 +25,10 @@ class _NewReadMeState extends State<NewReadMe> {
   @override
   void initState() {
     super.initState();
-    _user = widget.user;
-    _enteredTitle = widget.title;
+    if (mounted) {
+      _user = widget.user;
+      _enteredTitle = widget.title;
+    }
   }
 
   void _newReadMe() async {
@@ -78,16 +80,18 @@ class _NewReadMeState extends State<NewReadMe> {
                     ),
                     initialValue: _enteredTitle,
                     onChanged: (value) {
-                      setState(() {
-                        _enteredTitle = value;
-                      });
+                      if (this.mounted)
+                        setState(() {
+                          _enteredTitle = value;
+                        });
                     },
                   ),
                   onFocusChange: (_) async {
                     final _canSave = await existRepo(_user, _enteredTitle);
-                    setState(() {
-                      canSave = _canSave;
-                    });
+                    if (this.mounted)
+                      setState(() {
+                        canSave = _canSave;
+                      });
                   },
                 ),
                 Focus(
@@ -99,16 +103,18 @@ class _NewReadMeState extends State<NewReadMe> {
                     ),
                     initialValue: _user,
                     onChanged: (value) {
-                      setState(() {
-                        _user = value;
-                      });
+                      if (this.mounted)
+                        setState(() {
+                          _user = value;
+                        });
                     },
                   ),
                   onFocusChange: (_) async {
                     final _canSave = await existRepo(_user, _enteredTitle);
-                    setState(() {
-                      canSave = _canSave;
-                    });
+                    if (this.mounted)
+                      setState(() {
+                        canSave = _canSave;
+                      });
                   },
                 ),
                 const SizedBox(
@@ -135,9 +141,10 @@ class _NewReadMeState extends State<NewReadMe> {
                             else
                               _newReadMe();
                           } else {
-                            setState(() {
-                              canSave = _canSave;
-                            });
+                            if (this.mounted)
+                              setState(() {
+                                canSave = _canSave;
+                              });
                           }
                         }
                       : null,
