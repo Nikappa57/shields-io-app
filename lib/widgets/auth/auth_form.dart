@@ -1,19 +1,21 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(
-    this.submitF,
+    this.submitForm,
     this.isLoading,
   );
 
   final bool isLoading;
-  final void Function(
-    String email,
-    String passowrd,
-    String username,
-    bool isLogin,
-    BuildContext ctx,
-  ) submitF;
+  final void Function({
+    @required String email,
+    @required String password,
+    @required String username,
+    @required bool isLogin,
+    @required BuildContext ctx,
+    String token,
+  }) submitForm;
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
@@ -24,18 +26,20 @@ class _AuthFormState extends State<AuthForm> {
   String _email = '';
   String _username = '';
   String _password = '';
+  String _token = '';
 
   void _submit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState.save();
-      widget.submitF(
-        _email.trim(),
-        _password.trim(),
-        _username.trim(),
-        _isLogin,
-        context,
+      widget.submitForm(
+        email: _email.trim().toLowerCase(),
+        password: _password.trim(),
+        username: _username.trim(),
+        token: _token.trim(),
+        isLogin: _isLogin,
+        ctx: context,
       );
     }
   }
@@ -93,6 +97,28 @@ class _AuthFormState extends State<AuthForm> {
                       },
                       onSaved: (value) {
                         _username = value;
+                      },
+                    ),
+                  if (!_isLogin)
+                    TextFormField(
+                      key: ValueKey('token'),
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: InputDecoration(
+                        labelText: 'GitHub token (optional)',
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.help_outline),
+                          onPressed: () async {
+                            const url =
+                                "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token";
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            }
+                          },
+                        ),
+                      ),
+                      onSaved: (value) {
+                        _token = value;
                       },
                     ),
                   TextFormField(

@@ -14,14 +14,14 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
   final _auth = FirebaseAuth.instance;
 
-  // TODO: add Github login
-  void _submitAuthForm(
-    String email,
-    String password,
-    String username,
-    bool isLogin,
-    BuildContext ctx,
-  ) async {
+  void _submitAuthForm({
+    @required String email,
+    @required String password,
+    @required String username,
+    @required bool isLogin,
+    @required BuildContext ctx,
+    String token = '',
+  }) async {
     UserCredential authResult;
     try {
       setState(() {
@@ -43,6 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set(
           {
             'username': username,
+            'github-token': token,
             'email': email,
           },
         );
