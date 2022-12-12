@@ -66,8 +66,7 @@ class _NewReadMeState extends State<NewReadMe> {
       ),
       child: Column(
         children: [
-          Text(
-              widget.documentId != null ? 'Edit new ReadMe' : 'Add new ReadMe'),
+          Text(widget.documentId != null ? 'Edit ReadMe' : 'Add new ReadMe'),
           Form(
             child: Column(
               children: [
