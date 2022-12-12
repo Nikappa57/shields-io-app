@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
         create: (ctx) => Shields(),
         child: MaterialApp(
-          title: 'ReadMe Editor',
+          title: 'ReadMe Shield Editor',
           theme: ThemeData(
               primaryColor: Colors.purple[900],
               backgroundColor: Colors.purple[900],
