@@ -15,7 +15,6 @@ A mobile version of the famous site [shield.io](https://shields.io/)
 - search the badge in the categories or global list
 - see only your favorite badges in categories or global list
 
-<img src="readme-gif/auth.gif" alt="auth"/> 
-<img src="readme-gif/add-readme.gif" alt="add-readme"/>
-<img src="readme-gif/shield-list.gif" alt="shield-list"/>
-<img src="readme-gif/create-badge.gif" alt="create-badge.gif"/>
+<img src="readme-gif/auth.gif" alt="auth" width="300"/>  <img src="readme-gif/add-readme.gif" alt="add-readme" width="300"/>
+
+<img src="readme-gif/shield-list.gif" alt="shield-list" width="300"/> <img src="readme-gif/create-badge.gif" alt="create-badge.gif" width="300"/>
