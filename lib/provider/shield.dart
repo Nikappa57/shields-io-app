@@ -14,7 +14,6 @@ class Shields extends ChangeNotifier {
 
   Future<void> setData() async {
     Scraper scraper = Scraper();
-
     final user = FirebaseAuth.instance.currentUser;
     final shieldData = await FirebaseFirestore.instance
         .collection('users')
@@ -23,8 +22,10 @@ class Shields extends ChangeNotifier {
         .get();
 
     var futures = <Future>[];
-
     for (ShieldCategory category in ShieldCategory.values) {
+      if (category == ShieldCategory.static || category == ShieldCategory.badge)
+        continue;
+
       var thread = new Future(() async {
         // get shields list in category
         final List<Map<String, String>> categoryShields =
@@ -55,5 +56,32 @@ class Shields extends ChangeNotifier {
     }
 
     await Future.wait(futures);
+
+    // Badges
+    final List<Map<String, String>> badges = await scraper.getStaticBadges();
+    for (Map<String, String> badgeElement in badges) {
+      if (badgeElement['name'] != null &&
+          badgeElement['code'] != null &&
+          badgeElement['img'] != null) {
+        if (_shields
+            .where((element) => element.name == badgeElement['name'])
+            .isNotEmpty) continue;
+        final bool favourite = shieldData.docs
+            .where((element) =>
+                element.data()['shield-code'] == badgeElement['code'])
+            .isNotEmpty;
+
+        _shields.add(
+          ShieldModel(
+            name: badgeElement['name'],
+            code: badgeElement['code'],
+            previewImgUrl: badgeElement['img'].replaceAll(
+                'https://img.shields.io', 'https://raster.shields.io'),
+            category: ShieldCategory.badge,
+            favourite: favourite,
+          ),
+        );
+      }
+    }
   }
 }

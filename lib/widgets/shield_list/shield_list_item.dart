@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:readme_editor/models/shield.dart';
+import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
 
 class ShieldListItem extends StatelessWidget {
@@ -50,7 +52,16 @@ class ShieldListItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       child: ListTile(
-        onTap: () => _createShield(context),
+        onTap: shield.category == ShieldCategory.badge
+            ? () {
+                Clipboard.setData(
+                    ClipboardData(text: shield.markdown({}, isStatic: false)));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Badge copied to clipboard"),
+                  backgroundColor: Colors.green,
+                ));
+              }
+            : () => _createShield(context),
         title: Text(shield.name),
         trailing: IconButton(
             icon: Icon(

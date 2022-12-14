@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 enum ShieldCategory {
   All,
+  badge,
   Build,
   CodeCoverage,
   TestResults,
@@ -90,6 +91,8 @@ extension ColorExtension on ShieldCategory {
         return Icons.accessibility_outlined;
       case ShieldCategory.Other:
         return Icons.plus_one_outlined;
+      case ShieldCategory.badge:
+        return Icons.badge;
       default:
         return null;
     }
