@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readme_editor/screens/single_readme.dart';
 import 'package:readme_editor/widgets/readme_list/new_readme.dart';
