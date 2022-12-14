@@ -108,8 +108,10 @@ class _SingleReadMeState extends State<SingleReadMe> {
     if (_showOnlyFavourites)
       shields = shields.where((shield) => shield.favourite).toList();
     if (_showSearchBar)
-      shields =
-          shields.where((shield) => shield.name.contains(_searchText)).toList();
+      shields = shields
+          .where((shield) =>
+              shield.name.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
 
     return Scaffold(
       appBar: AppBar(
