@@ -1,15 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/models/icon.dart';
 import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/scraper.dart';
 
 class Shields extends ChangeNotifier {
   List<ShieldModel> _shields = [];
+  List<BadgeIconModel> _icons = [];
 
   List<ShieldModel> get shields {
     return [..._shields]; // Return a copy of _shields
+  }
+
+  List<BadgeIconModel> get icons {
+    return [..._icons]; // Return a copy of _icons
   }
 
   Future<void> setData() async {
@@ -21,6 +27,7 @@ class Shields extends ChangeNotifier {
         .collection('favouriteShield')
         .get();
 
+    // Shields
     var futures = <Future>[];
     for (ShieldCategory category in ShieldCategory.values) {
       if (category == ShieldCategory.static || category == ShieldCategory.badge)
@@ -80,6 +87,16 @@ class Shields extends ChangeNotifier {
             category: ShieldCategory.badge,
             favourite: favourite,
           ),
+        );
+      }
+    }
+    print("ICONS START");
+    //icons
+    final List<Map<String, String>> icons = await scraper.getStaticIcons();
+    for (Map<String, String> icon in icons) {
+      if (icon['name'] != null && icon['slug'] != null) {
+        _icons.add(
+          BadgeIconModel(name: icon['name'], slug: icon['slug']),
         );
       }
     }

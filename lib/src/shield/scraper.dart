@@ -3,6 +3,7 @@ import 'package:web_scraper/web_scraper.dart';
 class Scraper {
   final shieldScraper = WebScraper('https://shields.io/');
   final badgesScraper = WebScraper('https://ileriayo.github.io/');
+  final iconScraper = WebScraper('https://raw.githubusercontent.com/');
 
   Future<List> getShieldsByCategory(String categoryLink) async {
     List<Map<String, String>> shields = [];
@@ -24,8 +25,28 @@ class Scraper {
     return shields;
   }
 
-  // badges
+  // icons
+  Future<List> getStaticIcons() async {
+    final iconsPattern = RegExp(r'\| `(.*)` \| `(.*)` \|');
+    List<Map<String, String>> icons = [];
+    if (await iconScraper
+        .loadWebPage('/simple-icons/simple-icons/develop/slugs.md')) {
+      String pageContent = iconScraper.getPageContent();
+      print(pageContent.split('\n'));
+      final matches = iconsPattern.allMatches(pageContent);
 
+      for (var match in matches) {
+        icons.add({
+          'name': match.group(1),
+          'slug': match.group(2),
+        });
+      }
+    }
+    print("Icons: $icons");
+    return icons;
+  }
+
+  // badges
   Future<List> getStaticBadges() async {
     final badgePattern = RegExp(r'(\/badge.*?)\)');
     List<Map<String, String>> badges = [];
