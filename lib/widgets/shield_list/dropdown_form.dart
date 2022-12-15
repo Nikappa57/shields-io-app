@@ -136,6 +136,9 @@ class _DropdownFormState extends State<DropdownForm> {
                           (icon) =>
                               icon.name.toLowerCase() == val.toLowerCase(),
                           orElse: () {
+                            setState(() {
+                              widget.shield.icon = null;
+                            });
                             var hintLogo = icons.firstWhere((element) =>
                                 element.name.toLowerCase().startsWith(val));
                             setState(() {
