@@ -89,167 +89,173 @@ class _DropdownFormState extends State<DropdownForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 25,
-        horizontal: 12,
+      padding: EdgeInsets.only(
+        top: 12,
+        left: 12,
+        right: 12,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 10,
       ),
-      child: Column(
-        children: [
-          Text("Create your Badges"),
-          Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  for (String arg in widget.shield.args)
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Create your Badges"),
+            Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    for (String arg in widget.shield.args)
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText:
+                              arg.replaceAll(RegExp(r'\*$'), ' (optional)'),
+                          icon: Icon(Icons.text_fields),
+                        ),
+                        textInputAction: TextInputAction.next,
+                        onChanged: (val) {
+                          setState(() {
+                            _args[arg] = val;
+                          });
+                        },
+                      ),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText:
-                            arg.replaceAll(RegExp(r'\*$'), ' (optional)'),
-                        icon: Icon(Icons.text_fields),
+                        labelText: 'Logo (optional)',
+                        helperText: _logoHelperText,
+                        icon: Icon(
+                          Icons.donut_small_sharp,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
+                      style: TextStyle(color: _logoFormColor),
                       textInputAction: TextInputAction.next,
                       onChanged: (val) {
+                        var icons =
+                            Provider.of<Shields>(context, listen: false).icons;
+                        var icon = icons.firstWhere(
+                          (icon) =>
+                              icon.name.toLowerCase() == val.toLowerCase(),
+                          orElse: () {
+                            var hintLogo = icons.firstWhere((element) =>
+                                element.name.toLowerCase().startsWith(val));
+                            setState(() {
+                              _logoFormColor = Colors.red;
+                              if (hintLogo != null)
+                                _logoHelperText = hintLogo.name;
+                            });
+                            return null;
+                          },
+                        );
+                        if (icon != null)
+                          setState(() {
+                            widget.shield.icon = icon;
+                            _logoFormColor = Colors.black;
+                            _logoHelperText = '';
+                          });
+                      },
+                    ),
+                    if (widget.shield.icon != null)
+                      SelectFormField(
+                        type: SelectFormFieldType.dropdown,
+                        icon: Icon(
+                          Icons.color_lens_outlined,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        labelText: 'Logo Color (optional)',
+                        items: _colorsValue,
+                        onChanged: (val) {
+                          setState(() {
+                            widget.shield.icon.color = ShieldColor.values
+                                .firstWhere((color) => color.name == val);
+                          });
+                        },
+                      ),
+                    SelectFormField(
+                      type: SelectFormFieldType.dropdown,
+                      initialValue:
+                          widget.isStatic ? ShieldColor.values[0].name : null,
+                      icon: Icon(
+                        Icons.color_lens_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      labelText: widget.isStatic ? 'Color' : 'Color (optional)',
+                      items: _colorsValue,
+                      onChanged: (val) {
                         setState(() {
-                          _args[arg] = val;
+                          widget.shield.color = ShieldColor.values
+                              .firstWhere((color) => color.name == val);
                         });
                       },
                     ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Logo (optional)',
-                      helperText: _logoHelperText,
-                      icon: Icon(
-                        Icons.donut_small_sharp,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    style: TextStyle(color: _logoFormColor),
-                    textInputAction: TextInputAction.next,
-                    onChanged: (val) {
-                      var icons =
-                          Provider.of<Shields>(context, listen: false).icons;
-                      var icon = icons.firstWhere(
-                        (icon) => icon.name.toLowerCase() == val.toLowerCase(),
-                        orElse: () {
-                          var hintLogo = icons.firstWhere((element) =>
-                              element.name.toLowerCase().startsWith(val));
-                          setState(() {
-                            _logoFormColor = Colors.red;
-                            if (hintLogo != null)
-                              _logoHelperText = hintLogo.name;
-                          });
-                          return null;
-                        },
-                      );
-                      if (icon != null)
-                        setState(() {
-                          widget.shield.icon = icon;
-                          _logoFormColor = Colors.black;
-                          _logoHelperText = '';
-                        });
-                    },
-                  ),
-                  if (widget.shield.icon != null)
                     SelectFormField(
                       type: SelectFormFieldType.dropdown,
                       icon: Icon(
                         Icons.color_lens_outlined,
                         color: Theme.of(context).primaryColor,
                       ),
-                      labelText: 'Logo Color (optional)',
+                      labelText: 'Title Color (optional)',
                       items: _colorsValue,
                       onChanged: (val) {
                         setState(() {
-                          widget.shield.icon.color = ShieldColor.values
+                          widget.shield.titlecolor = ShieldColor.values
                               .firstWhere((color) => color.name == val);
                         });
                       },
                     ),
-                  SelectFormField(
-                    type: SelectFormFieldType.dropdown,
-                    initialValue:
-                        widget.isStatic ? ShieldColor.values[0].name : null,
-                    icon: Icon(
-                      Icons.color_lens_outlined,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    labelText: widget.isStatic ? 'Color' : 'Color (optional)',
-                    items: _colorsValue,
-                    onChanged: (val) {
-                      setState(() {
-                        widget.shield.color = ShieldColor.values
-                            .firstWhere((color) => color.name == val);
-                      });
-                    },
-                  ),
-                  SelectFormField(
-                    type: SelectFormFieldType.dropdown,
-                    icon: Icon(
-                      Icons.color_lens_outlined,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    labelText: 'Title Color (optional)',
-                    items: _colorsValue,
-                    onChanged: (val) {
-                      setState(() {
-                        widget.shield.titlecolor = ShieldColor.values
-                            .firstWhere((color) => color.name == val);
-                      });
-                    },
-                  ),
-                  SelectFormField(
-                    type: SelectFormFieldType.dropdown,
-                    initialValue: ShieldStyle.values[0].name,
-                    icon: Icon(
-                      Icons.style_outlined,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    labelText: 'Style',
-                    items: _styleValue,
-                    onChanged: (val) {
-                      setState(() {
-                        widget.shield.style = ShieldStyle.values
-                            .firstWhere((style) => style.name == val);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                  if (_showImg)
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Clipboard.setData(ClipboardData(
-                            text: widget.shield
-                                .markdown(_args, isStatic: widget.isStatic)));
-
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Shield copied to clipboard"),
-                          backgroundColor: Colors.green,
-                        ));
+                    SelectFormField(
+                      type: SelectFormFieldType.dropdown,
+                      initialValue: ShieldStyle.values[0].name,
+                      icon: Icon(
+                        Icons.style_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      labelText: 'Style',
+                      items: _styleValue,
+                      onChanged: (val) {
+                        setState(() {
+                          widget.shield.style = ShieldStyle.values
+                              .firstWhere((style) => style.name == val);
+                        });
                       },
-                      child: FadeInImage(
-                        fit: BoxFit.contain,
-                        height: 30,
-                        placeholder: AssetImage('assets/img/shield.png'),
-                        image: NetworkImage(
-                          widget.isStatic
-                              ? widget.shield
-                                  .staticShieldLink(_args)
-                                  .replaceFirst('img.', 'raster.')
-                              : widget.shield
-                                  .mdLink(_args)
-                                  .replaceFirst('img.', 'raster.'),
+                    ),
+                    const SizedBox(height: 30),
+                    if (_showImg)
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Clipboard.setData(ClipboardData(
+                              text: widget.shield
+                                  .markdown(_args, isStatic: widget.isStatic)));
+
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Shield copied to clipboard"),
+                            backgroundColor: Colors.green,
+                          ));
+                        },
+                        child: FadeInImage(
+                          fit: BoxFit.contain,
+                          height: 30,
+                          placeholder: AssetImage('assets/img/shield.png'),
+                          image: NetworkImage(
+                            widget.isStatic
+                                ? widget.shield
+                                    .staticShieldLink(_args)
+                                    .replaceFirst('img.', 'raster.')
+                                : widget.shield
+                                    .mdLink(_args)
+                                    .replaceFirst('img.', 'raster.'),
+                          ),
                         ),
                       ),
-                    ),
-                  if (!_showImg)
-                    Image.asset(
-                      'assets/img/shield.png',
-                      height: 30,
-                    ),
-                ],
-              )),
-        ],
+                    if (!_showImg)
+                      Image.asset(
+                        'assets/img/shield.png',
+                        height: 30,
+                      ),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }

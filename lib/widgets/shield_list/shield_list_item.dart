@@ -27,17 +27,19 @@ class ShieldListItem extends StatelessWidget {
           topRight: const Radius.circular(45.0),
         ),
       ),
+      isScrollControlled: true,
       backgroundColor: Colors.white,
       context: context,
       builder: (_) => GestureDetector(
         onTap: () {},
         behavior: HitTestBehavior.opaque,
         child: SingleChildScrollView(
-            child: DropdownForm(
-          shield: shield,
-          username: username,
-          repo: repo,
-        )),
+          child: DropdownForm(
+            shield: shield,
+            username: username,
+            repo: repo,
+          ),
+        ),
       ),
     );
   }

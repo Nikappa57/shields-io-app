@@ -3,10 +3,11 @@ import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
 
 class ReadMeDropdownButton extends StatelessWidget {
-  ReadMeDropdownButton(
-      {@required this.username,
-      @required this.repo,
-      @required this.changeSearchBar});
+  ReadMeDropdownButton({
+    @required this.username,
+    @required this.repo,
+    @required this.changeSearchBar,
+  });
 
   final String username;
   final String repo;
@@ -24,6 +25,7 @@ class ReadMeDropdownButton extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       context: context,
+      isScrollControlled: true,
       builder: (_) => GestureDetector(
         onTap: () {},
         behavior: HitTestBehavior.opaque,
