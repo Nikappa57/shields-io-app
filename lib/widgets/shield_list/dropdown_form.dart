@@ -26,6 +26,16 @@ class _DropdownFormState extends State<DropdownForm> {
   Color _logoFormColor = Colors.black;
   String _logoHelperText = '';
 
+  @override
+  void dispose() {
+    widget.shield.color = null;
+    if (widget.shield.icon != null) widget.shield.icon.color = null;
+    widget.shield.icon = null;
+    widget.shield.style = null;
+    widget.shield.titlecolor = null;
+    super.dispose();
+  }
+
   final List<Map<String, dynamic>> _colorsValue = {
     for (var color in ShieldColor.values)
       {
@@ -127,6 +137,9 @@ class _DropdownFormState extends State<DropdownForm> {
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
+                      initialValue: widget.shield.icon != null
+                          ? widget.shield.icon.name
+                          : '',
                       style: TextStyle(color: _logoFormColor),
                       textInputAction: TextInputAction.next,
                       onChanged: (val) {
@@ -166,6 +179,9 @@ class _DropdownFormState extends State<DropdownForm> {
                         ),
                         labelText: 'Logo Color (optional)',
                         items: _colorsValue,
+                        initialValue: widget.shield.icon.color != null
+                            ? widget.shield.icon.color.name
+                            : '',
                         onChanged: (val) {
                           setState(() {
                             widget.shield.icon.color = ShieldColor.values
@@ -175,8 +191,11 @@ class _DropdownFormState extends State<DropdownForm> {
                       ),
                     SelectFormField(
                       type: SelectFormFieldType.dropdown,
-                      initialValue:
-                          widget.isStatic ? ShieldColor.values[0].name : null,
+                      initialValue: widget.shield.color != null
+                          ? widget.shield.color.name
+                          : widget.isStatic
+                              ? ShieldColor.values[0].name
+                              : '',
                       icon: Icon(
                         Icons.color_lens_outlined,
                         color: Theme.of(context).primaryColor,
@@ -196,6 +215,9 @@ class _DropdownFormState extends State<DropdownForm> {
                         Icons.color_lens_outlined,
                         color: Theme.of(context).primaryColor,
                       ),
+                      initialValue: widget.shield.titlecolor != null
+                          ? widget.shield.titlecolor.name
+                          : '',
                       labelText: 'Title Color (optional)',
                       items: _colorsValue,
                       onChanged: (val) {
@@ -207,7 +229,9 @@ class _DropdownFormState extends State<DropdownForm> {
                     ),
                     SelectFormField(
                       type: SelectFormFieldType.dropdown,
-                      initialValue: ShieldStyle.values[0].name,
+                      initialValue: widget.shield.style != null
+                          ? widget.shield.style.name
+                          : ShieldStyle.values[0].name,
                       icon: Icon(
                         Icons.style_outlined,
                         color: Theme.of(context).primaryColor,
