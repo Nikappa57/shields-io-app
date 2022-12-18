@@ -85,7 +85,7 @@ class _DropdownFormState extends State<DropdownForm> {
   bool get _showImg {
     if (widget.shield.args.length == 0) return true;
     if (_args.keys.length -
-            (widget.shield.isGithubShield ? 2 : 0) < // name and repo
+            (widget.shield.isGithubShield ? 0 : 2) < // name and repo
         widget.shield.args.where((arg) => !arg.endsWith('*')).length)
       return false;
     for (String element in _args.values) {
