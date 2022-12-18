@@ -21,6 +21,7 @@ class ShearchForm extends StatelessWidget {
                 hintText: 'Search',
                 icon: Icon(Icons.search),
               ),
+              autofocus: true,
               onChanged: onSearching,
             ),
           ),
