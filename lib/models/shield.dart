@@ -54,8 +54,9 @@ class ShieldModel {
     shieldArgs.keys.forEach((key) {
       _linkSuffix = _linkSuffix.replaceAll(":$key", shieldArgs[key]);
     });
-    String _link =
-        'https://img.shields.io$_linkSuffix?style=${this.style.name}';
+    String _link = 'https://img.shields.io$_linkSuffix';
+    _link += _link.contains('?') ? '&' : '?';
+    _link += 'style=${this.style.name}';
     if (this.color != null) _link += '&color=${this.color.name}';
     if (this.titlecolor != null) _link += '&labelColor=${this.titlecolor.name}';
     if (this.icon != null) _link += '&logo=${this.icon.name}';

@@ -5,6 +5,7 @@ import 'package:readme_editor/models/icon.dart';
 import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/scraper.dart';
+import 'package:readme_editor/src/shield/styles.dart';
 
 class Shields extends ChangeNotifier {
   List<ShieldModel> _shields = [];
@@ -46,16 +47,19 @@ class Shields extends ChangeNotifier {
                 .where((element) =>
                     element.data()['shield-code'] == shieldElement['code'])
                 .isNotEmpty;
-            _shields.add(
-              ShieldModel(
-                name: shieldElement['name'],
-                code: shieldElement['code'],
-                previewImgUrl: shieldElement['img'].replaceAll(
-                    'https://shields.io', 'https://raster.shields.io'),
-                category: category,
-                favourite: favourite,
-              ),
+            ShieldModel shield = ShieldModel(
+              name: shieldElement['name'],
+              code: shieldElement['code'],
+              previewImgUrl: shieldElement['img'].replaceAll(
+                  'https://shields.io', 'https://raster.shields.io'),
+              category: category,
+              favourite: favourite,
             );
+            if (shield.code.contains('?style=social')) {
+              shield.code = shield.code.replaceAll('?style=social', '');
+              shield.style = ShieldStyle.social;
+            }
+            _shields.add(shield);
           }
         }
       });
@@ -90,7 +94,6 @@ class Shields extends ChangeNotifier {
         );
       }
     }
-    print("ICONS START");
     //icons
     final List<Map<String, String>> icons = await scraper.getStaticIcons();
     for (Map<String, String> icon in icons) {
