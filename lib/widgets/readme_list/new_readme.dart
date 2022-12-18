@@ -31,12 +31,21 @@ class _NewReadMeState extends State<NewReadMe> {
     }
   }
 
+  Future<bool> _isUnique() async {
+    final data = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('readme')
+        .where('project-name', isEqualTo: _enteredTitle)
+        .get();
+    return data != null;
+  }
+
   void _newReadMe() async {
     Navigator.of(context).pop();
 
     FirebaseFirestore.instance.collection('users/${user.uid}/readme').add({
       'project-name': _enteredTitle,
-      'text': '# $_enteredTitle',
       'create-at': Timestamp.now(),
       'user': _user,
     });
@@ -86,7 +95,8 @@ class _NewReadMeState extends State<NewReadMe> {
                     },
                   ),
                   onFocusChange: (_) async {
-                    final _canSave = await existRepo(_user, _enteredTitle);
+                    final _canSave = await existRepo(_user, _enteredTitle) &&
+                        await _isUnique();
                     if (this.mounted)
                       setState(() {
                         canSave = _canSave;
