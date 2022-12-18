@@ -44,8 +44,9 @@ class ShieldModel {
     return arg
         .allMatches(this.code)
         .map((m) => m.group(1))
-        .where((element) =>
-            element != 'user' && element != 'repo' && element != 'color')
+        .where((element) => isGithubShield
+            ? element != 'user' && element != 'repo' && element != 'color'
+            : true)
         .toList();
   }
 
@@ -70,6 +71,8 @@ class ShieldModel {
         isStatic ? staticShieldLink(shieldArgs) : mdLink(shieldArgs);
     return '![${this.name}]($_link)';
   }
+
+  bool get isGithubShield => this.code.startsWith('/github/');
 }
 
 ShieldModel staitcShield = ShieldModel(
