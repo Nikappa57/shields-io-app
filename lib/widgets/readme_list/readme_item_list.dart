@@ -40,6 +40,7 @@ class ReadMeItemList extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       context: context,
+      isScrollControlled: true,
       builder: (_) => GestureDetector(
         onTap: () {},
         behavior: HitTestBehavior.opaque,

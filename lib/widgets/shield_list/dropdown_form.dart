@@ -100,11 +100,9 @@ class _DropdownFormState extends State<DropdownForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        top: 12,
-        left: 12,
-        right: 12,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+      padding: const EdgeInsets.symmetric(
+        vertical: 25,
+        horizontal: 20,
       ),
       child: Container(
         child: Column(

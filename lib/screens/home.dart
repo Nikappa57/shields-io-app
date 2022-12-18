@@ -20,6 +20,7 @@ class Home extends StatelessWidget {
           topRight: const Radius.circular(45.0),
         ),
       ),
+      isScrollControlled: true,
       backgroundColor: Colors.white,
       context: context,
       builder: (_) => GestureDetector(
