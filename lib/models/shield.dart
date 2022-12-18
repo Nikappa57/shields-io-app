@@ -40,8 +40,8 @@ class ShieldModel {
   }
 
   List<String> get args {
-    final arg = RegExp(r':([a-zA-Z]+\*?)');
-    return arg
+    final argPattern = RegExp(r':([a-zA-Z]+[\*\?\+]?)');
+    return argPattern
         .allMatches(this.code)
         .map((m) => m.group(1))
         .where((element) => isGithubShield
@@ -50,11 +50,22 @@ class ShieldModel {
         .toList();
   }
 
+  List<String> get optionalArgs {
+    final argPattern = RegExp(r':([a-zA-Z]+[\*\?])');
+    return argPattern.allMatches(this.code).map((m) => m.group(1)).toList();
+  }
+
   String mdLink(Map<String, String> shieldArgs) {
     String _linkSuffix = this.code;
     shieldArgs.keys.forEach((key) {
       _linkSuffix = _linkSuffix.replaceAll(":$key", shieldArgs[key]);
     });
+
+    this.optionalArgs.forEach((arg) {
+      if (!shieldArgs.containsKey(arg))
+        _linkSuffix = _linkSuffix.replaceAll(":$arg", '');
+    });
+
     String _link = 'https://img.shields.io$_linkSuffix';
     _link += _link.contains('?') ? '&' : '?';
     _link += 'style=${this.style.name}';
@@ -63,6 +74,7 @@ class ShieldModel {
     if (this.icon != null) _link += '&logo=${this.icon.name}';
     if (this.icon != null && this.icon.color != null)
       _link += '&logoColor=${this.icon.color.name}';
+
     return _link;
   }
 

@@ -76,20 +76,18 @@ class _DropdownFormState extends State<DropdownForm> {
       'user': widget.username,
       'repo': widget.repo,
     };
-    if (widget.isStatic) {
-      widget.shield.color = ShieldColor.values[0];
-      widget.shield.style = ShieldStyle.values[0];
-    }
+    widget.shield.style = ShieldStyle.values[0];
+    if (widget.isStatic) widget.shield.color = ShieldColor.values[0];
   }
 
   bool get _showImg {
     if (widget.shield.args.length == 0) return true;
-    if (_args.keys.length -
-            (widget.shield.isGithubShield ? 0 : 2) < // name and repo
-        widget.shield.args.where((arg) => !arg.endsWith('*')).length)
-      return false;
+    if (_args.keys.length - 2 <
+        widget.shield.args
+            .where((arg) => !arg.endsWith('*') && !arg.endsWith('?'))
+            .length) return false;
     for (String element in _args.values) {
-      if (!element.endsWith('*')) {
+      if (!element.endsWith('*') && !element.endsWith('?')) {
         if (element == null) return false;
         if (element.isEmpty) return false;
       }
@@ -117,7 +115,7 @@ class _DropdownFormState extends State<DropdownForm> {
                       TextFormField(
                         decoration: InputDecoration(
                           labelText:
-                              arg.replaceAll(RegExp(r'\*$'), ' (optional)'),
+                              arg.replaceAll(RegExp(r'[\*\?]$'), ' (optional)'),
                           icon: Icon(Icons.text_fields),
                         ),
                         textInputAction: TextInputAction.next,
