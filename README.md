@@ -18,6 +18,8 @@ Also includes the list of static badges of [ileriayo.github.io/markdown-badges](
 - see only your favorite badges in categories or global list
 - create your static badge or take one from [ileriayo.github.io/markdown-badges](https://ileriayo.github.io/markdown-badges/) already implemented in the app
 
-<img src="readme-gif/auth.gif" alt="auth" width="300"/>  <img src="readme-gif/add-readme.gif" alt="add-readme" width="300"/>
+<img src="readme-gif/auth.gif" alt="auth" width="300"/>  <img src="readme-gif/readme-list.gif" alt="readme list" width="300"/>
 
-<img src="readme-gif/shield-list.gif" alt="shield-list" width="300"/> <img src="readme-gif/create-badge.gif" alt="create-badge.gif" width="300"/>
+<img src="readme-gif/favourites-shields.gif" alt="fav shields" width="300"/> <img src="readme-gif/search-shield.gif" alt="search shield.gif" width="300"/>
+
+<img src="readme-gif/create-shield.gif" alt="create shields" width="300"/> <img src="readme-gif/static-shield.gif" alt="static-shield.gif" width="300"/>
