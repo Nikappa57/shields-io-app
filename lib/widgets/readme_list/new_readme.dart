@@ -36,7 +36,7 @@ class _NewReadMeState extends State<NewReadMe> {
         .collection('users')
         .doc(user.uid)
         .collection('readme')
-        .where('project-name', isEqualTo: _enteredTitle)
+        .where('project-name', isEqualTo: _enteredTitle.trim())
         .get();
     return data != null;
   }
@@ -45,7 +45,7 @@ class _NewReadMeState extends State<NewReadMe> {
     Navigator.of(context).pop();
 
     FirebaseFirestore.instance.collection('users/${user.uid}/readme').add({
-      'project-name': _enteredTitle,
+      'project-name': _enteredTitle.trim(),
       'create-at': Timestamp.now(),
       'user': _user,
     });
@@ -60,7 +60,7 @@ class _NewReadMeState extends State<NewReadMe> {
         .collection('readme')
         .doc(widget.documentId)
         .update({
-      'project-name': _enteredTitle,
+      'project-name': _enteredTitle.trim(),
       'user': _user,
     });
   }
@@ -87,10 +87,11 @@ class _NewReadMeState extends State<NewReadMe> {
                       icon: Icon(Icons.title),
                     ),
                     initialValue: _enteredTitle,
+                    textInputAction: TextInputAction.next,
                     onChanged: (value) {
                       if (this.mounted)
                         setState(() {
-                          _enteredTitle = value;
+                          _enteredTitle = value.trim();
                         });
                     },
                   ),

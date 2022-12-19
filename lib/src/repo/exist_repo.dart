@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 Future<bool> existRepo(String username, String repo) async {
+  repo = repo.trim();
   final user = FirebaseAuth.instance.currentUser;
   final userData =
       await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
