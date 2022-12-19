@@ -41,7 +41,12 @@ class ShieldModel {
 
   List<String> get args {
     final argPattern = RegExp(r':([a-zA-Z]+[\*\?\+]?)');
-    return argPattern.allMatches(this.code).map((m) => m.group(1)).toList();
+    return argPattern
+        .allMatches(this.code)
+        .map((m) => m.group(1))
+        .where((arg) =>
+            this.category == ShieldCategory.static ? arg != 'color' : true)
+        .toList();
   }
 
   List<String> get optionalArgs {
