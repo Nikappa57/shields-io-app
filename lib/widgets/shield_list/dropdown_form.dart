@@ -117,6 +117,7 @@ class _DropdownFormState extends State<DropdownForm> {
                               arg.replaceAll(RegExp(r'[\*\?]$'), ' (optional)'),
                           icon: Icon(Icons.text_fields),
                         ),
+                        key: ValueKey(arg),
                         textInputAction: TextInputAction.next,
                         initialValue: _args.containsKey(arg) ? _args[arg] : '',
                         onChanged: (val) {
@@ -134,6 +135,7 @@ class _DropdownFormState extends State<DropdownForm> {
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
+                      key: ValueKey('Logo'),
                       initialValue: widget.shield.icon != null
                           ? widget.shield.icon.name
                           : '',
@@ -170,6 +172,7 @@ class _DropdownFormState extends State<DropdownForm> {
                     if (widget.shield.icon != null)
                       SelectFormField(
                         type: SelectFormFieldType.dropdown,
+                        key: ValueKey('Logo Color'),
                         icon: Icon(
                           Icons.color_lens_outlined,
                           color: Theme.of(context).primaryColor,
@@ -188,6 +191,7 @@ class _DropdownFormState extends State<DropdownForm> {
                       ),
                     SelectFormField(
                       type: SelectFormFieldType.dropdown,
+                      key: ValueKey('Color'),
                       initialValue: widget.shield.color != null
                           ? widget.shield.color.name
                           : widget.isStatic
@@ -208,6 +212,7 @@ class _DropdownFormState extends State<DropdownForm> {
                     ),
                     SelectFormField(
                       type: SelectFormFieldType.dropdown,
+                      key: ValueKey('Title Color'),
                       icon: Icon(
                         Icons.color_lens_outlined,
                         color: Theme.of(context).primaryColor,
@@ -233,6 +238,7 @@ class _DropdownFormState extends State<DropdownForm> {
                         Icons.style_outlined,
                         color: Theme.of(context).primaryColor,
                       ),
+                      key: ValueKey('Style'),
                       labelText: 'Style',
                       items: _styleValue,
                       onChanged: (val) {
