@@ -67,22 +67,21 @@ class _DropdownFormState extends State<DropdownForm> {
   }.toList();
 
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> _args;
+  Map<String, String> _args = {};
 
   @override
   void initState() {
     super.initState();
-    _args = {
-      'user': widget.username,
-      'repo': widget.repo,
-    };
+    if (widget.shield.args.contains('user')) _args['user'] = widget.username;
+    if (widget.shield.args.contains('repo')) _args['repo'] = widget.repo;
+
     widget.shield.style = ShieldStyle.values[0];
     if (widget.isStatic) widget.shield.color = ShieldColor.values[0];
   }
 
   bool get _showImg {
     if (widget.shield.args.length == 0) return true;
-    if (_args.keys.length - 2 <
+    if (_args.keys.length <
         widget.shield.args
             .where((arg) => !arg.endsWith('*') && !arg.endsWith('?'))
             .length) return false;
