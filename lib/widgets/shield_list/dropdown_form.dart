@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/provider/shield.dart';
+import 'package:readme_editor/src/shield/category.dart';
 import 'package:readme_editor/src/shield/colors.dart';
 import 'package:readme_editor/src/shield/styles.dart';
 import 'package:select_form_field/select_form_field.dart';
@@ -12,9 +13,7 @@ class DropdownForm extends StatefulWidget {
     @required this.shield,
     @required this.username,
     @required this.repo,
-    this.isStatic = false,
   });
-  final bool isStatic;
   final String username;
   final String repo;
   final ShieldModel shield;
@@ -76,7 +75,8 @@ class _DropdownFormState extends State<DropdownForm> {
     if (widget.shield.args.contains('repo')) _args['repo'] = widget.repo;
 
     widget.shield.style = ShieldStyle.values[0];
-    if (widget.isStatic) widget.shield.color = ShieldColor.values[0];
+    if (widget.shield.category == ShieldCategory.static)
+      widget.shield.color = ShieldColor.values[0];
   }
 
   bool get _showImg {
@@ -96,6 +96,7 @@ class _DropdownFormState extends State<DropdownForm> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isStatic = widget.shield.category == ShieldCategory.static;
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 25,
@@ -111,21 +112,25 @@ class _DropdownFormState extends State<DropdownForm> {
                 child: Column(
                   children: [
                     for (String arg in widget.shield.args)
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText:
-                              arg.replaceAll(RegExp(r'[\*\?]$'), ' (optional)'),
-                          icon: Icon(Icons.text_fields),
+                      if (!(isStatic && arg == 'color') &&
+                          !(widget.shield.isGithubShield &&
+                              (arg == 'repo' || arg == 'user')))
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: arg.replaceAll(
+                                RegExp(r'[\*\?]$'), ' (optional)'),
+                            icon: Icon(Icons.text_fields),
+                          ),
+                          key: ValueKey(arg),
+                          textInputAction: TextInputAction.next,
+                          initialValue:
+                              _args.containsKey(arg) ? _args[arg] : '',
+                          onChanged: (val) {
+                            setState(() {
+                              _args[arg] = val;
+                            });
+                          },
                         ),
-                        key: ValueKey(arg),
-                        textInputAction: TextInputAction.next,
-                        initialValue: _args.containsKey(arg) ? _args[arg] : '',
-                        onChanged: (val) {
-                          setState(() {
-                            _args[arg] = val;
-                          });
-                        },
-                      ),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Logo (optional)',
@@ -194,14 +199,14 @@ class _DropdownFormState extends State<DropdownForm> {
                       key: ValueKey('Color'),
                       initialValue: widget.shield.color != null
                           ? widget.shield.color.name
-                          : widget.isStatic
+                          : isStatic
                               ? ShieldColor.values[0].name
                               : '',
                       icon: Icon(
                         Icons.color_lens_outlined,
                         color: Theme.of(context).primaryColor,
                       ),
-                      labelText: widget.isStatic ? 'Color' : 'Color (optional)',
+                      labelText: isStatic ? 'Color' : 'Color (optional)',
                       items: _colorsValue,
                       onChanged: (val) {
                         setState(() {
@@ -255,7 +260,7 @@ class _DropdownFormState extends State<DropdownForm> {
                           Navigator.of(context).pop();
                           Clipboard.setData(ClipboardData(
                               text: widget.shield
-                                  .markdown(_args, isStatic: widget.isStatic)));
+                                  .markdown(_args, isStatic: isStatic)));
 
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("Shield copied to clipboard"),
@@ -267,7 +272,7 @@ class _DropdownFormState extends State<DropdownForm> {
                           height: 30,
                           placeholder: AssetImage('assets/img/shield.png'),
                           image: NetworkImage(
-                            widget.isStatic
+                            isStatic
                                 ? widget.shield
                                     .staticShieldLink(_args)
                                     .replaceFirst('img.', 'raster.')

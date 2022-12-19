@@ -34,7 +34,6 @@ class ReadMeDropdownButton extends StatelessWidget {
           shield: staitcShield,
           username: username,
           repo: repo,
-          isStatic: true,
         )),
       ),
     );
