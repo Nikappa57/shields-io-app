@@ -28,7 +28,7 @@ class ShieldModel {
 
   String staticShieldLink(Map<String, String> shieldArgs) {
     String _link = 'https://img.shields.io/badge/';
-    if (shieldArgs["title"] != null) _link += '${shieldArgs["title"]}-';
+    if (shieldArgs["title*"] != null) _link += '${shieldArgs["title*"]}-';
     _link +=
         '${shieldArgs["text"]}-${this.color.name}?style=${this.style.name}';
     if (this.icon != null) _link += '&logo=${this.icon.slug}';
