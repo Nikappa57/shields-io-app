@@ -47,6 +47,14 @@ class _AuthScreenState extends State<AuthScreen> {
             'email': email,
           },
         );
+
+        await FirebaseFirestore.instance
+            .collection('users/${authResult.user.uid}/readme')
+            .add({
+          'project-name': 'start',
+          'create-at': Timestamp.now(),
+          'user': username,
+        });
       }
     } on PlatformException catch (err) {
       String message = 'An error occurred';

@@ -1,14 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readme_editor/widgets/readme_list/no_repo_item.dart';
 import 'package:readme_editor/widgets/readme_list/readme_item_list.dart';
-
-// TODO: pik existing project and add to db
-
-// TODO: show only user readme and add to firebase perms that
-
-// TODO: can add new repo with an other username
-// TODO: add all github checks
 
 class ReadMeList extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser;
@@ -32,16 +26,23 @@ class ReadMeList extends StatelessWidget {
               ),
             );
           }
-          final files = snapshot.data.docs;
+          final List files = snapshot.data.docs;
+          files.insert(0, files.removeLast());
           return ListView.builder(
               itemCount: files.length,
               itemBuilder: (context, index) {
-                return ReadMeItemList(
-                  documentId: files[index].id,
-                  title: files[index].data()['project-name'],
-                  userId: user.uid,
-                  username: files[index].data()['user'],
-                );
+                String title = files[index].data()['project-name'];
+                return title == 'start'
+                    ? NoRepoItemList(
+                        documentId: files[index].id,
+                        userId: user.uid,
+                        username: files[index].data()['user'])
+                    : ReadMeItemList(
+                        documentId: files[index].id,
+                        title: title,
+                        userId: user.uid,
+                        username: files[index].data()['user'],
+                      );
               });
         });
   }

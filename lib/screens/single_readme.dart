@@ -96,15 +96,16 @@ class _SingleReadMeState extends State<SingleReadMe> {
 
   @override
   Widget build(BuildContext context) {
-    List<ShieldModel> shields;
+    List<ShieldModel> shields = Provider.of<Shields>(context).shields;
 
-    if (_currentCategory == ShieldCategory.All)
-      shields = Provider.of<Shields>(context).shields;
-    else
-      shields = Provider.of<Shields>(context)
-          .shields
+    if (!(_currentCategory == ShieldCategory.All))
+      shields = shields
           .where((element) => element.category == _currentCategory)
           .toList();
+    if (widget.title == 'Shields')
+      shields = shields
+          .where((element) => !element.isGithubShield)
+          .toList(); // remove github shields
     if (_showOnlyFavourites)
       shields = shields.where((shield) => shield.favourite).toList();
     if (_showSearchBar)
@@ -131,14 +132,16 @@ class _SingleReadMeState extends State<SingleReadMe> {
           Expanded(
             child: Container(
               child: ListView.builder(
-                  itemCount: shields.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      ShieldListItem(
-                          shield: shields[index],
-                          repo: widget.title,
-                          username: widget.username,
-                          addToFavourites: _addToFavourites,
-                          removeFromFavourites: _removeFromFavourites)),
+                itemCount: shields.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    ShieldListItem(
+                  shield: shields[index],
+                  repo: widget.title,
+                  username: widget.username,
+                  addToFavourites: _addToFavourites,
+                  removeFromFavourites: _removeFromFavourites,
+                ),
+              ),
             ),
           )
         ],
