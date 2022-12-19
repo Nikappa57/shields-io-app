@@ -80,13 +80,14 @@ class _DropdownFormState extends State<DropdownForm> {
   }
 
   bool get _showImg {
-    if (widget.shield.args.length == 0) return true;
-    if (_args.keys.length <
-        widget.shield.args.length - widget.shield.optionalArgs.length)
-      return false;
-    for (String element in widget.shield.args) {
-      if (element == null) return false;
-      if (element.isEmpty) return false;
+    final Set requiredArgs = widget.shield.args
+        .toSet()
+        .difference(widget.shield.optionalArgs.toSet());
+
+    if (requiredArgs.difference(_args.keys.toSet()).length != 0) return false;
+    for (String element in requiredArgs) {
+      if (_args[element] == null) return false;
+      if (_args[element].isEmpty) return false;
     }
     return true;
   }
