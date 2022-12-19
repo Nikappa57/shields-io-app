@@ -41,13 +41,7 @@ class ShieldModel {
 
   List<String> get args {
     final argPattern = RegExp(r':([a-zA-Z]+[\*\?\+]?)');
-    return argPattern
-        .allMatches(this.code)
-        .map((m) => m.group(1))
-        .where((element) => isGithubShield
-            ? element != 'user' && element != 'repo' && element != 'color'
-            : true)
-        .toList();
+    return argPattern.allMatches(this.code).map((m) => m.group(1)).toList();
   }
 
   List<String> get optionalArgs {
@@ -84,7 +78,13 @@ class ShieldModel {
     return '![${this.name}]($_link)';
   }
 
-  bool get isGithubShield => this.code.startsWith('/github/');
+  bool get isGithubShield {
+    if (this.code.startsWith('/github/')) return true;
+    if ((this.code.toLowerCase().contains('github') ||
+            this.name.toLowerCase().contains('github')) &&
+        (this.args.contains('user') || this.args.contains('repo'))) return true;
+    return false;
+  }
 }
 
 ShieldModel staitcShield = ShieldModel(

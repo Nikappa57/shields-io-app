@@ -17,7 +17,9 @@ class TopNavBar extends StatelessWidget {
           onTap: () => changeCategory(ShieldCategory.values[index]),
           child: Card(
             elevation: 3,
-            color: Theme.of(context).accentColor,
+            color: ShieldCategory.values[index] == ShieldCategory.All
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).accentColor,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Center(
