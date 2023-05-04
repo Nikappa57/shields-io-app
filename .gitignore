@@ -155,3 +155,4 @@ ios/Flutter/Flutter 2.podspec
 android/app/google-services.json
 ios/Flutter/Flutter 3.podspec
 ios/Flutter/Flutter 4.podspec
+node_modules
