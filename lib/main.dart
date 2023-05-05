@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
               ),
               backgroundColor:
                   MaterialStateProperty.all<Color>(Colors.purple[900]),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             ),
           ),
           textButtonTheme: TextButtonThemeData(
