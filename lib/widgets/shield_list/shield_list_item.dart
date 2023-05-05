@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
-import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
+import 'package:readme_editor/widgets/shield_list/newshield_form.dart';
 
 class ShieldListItem extends StatelessWidget {
   ShieldListItem({
     @required this.shield,
     @required this.username,
     @required this.repo,
+    @required this.createShield,
   });
 
   final String username;
   final String repo;
   final ShieldModel shield;
+  final Function createShield;
 
   void _createShield(BuildContext context) {
     showModalBottomSheet(
@@ -30,7 +32,7 @@ class ShieldListItem extends StatelessWidget {
         onTap: () {},
         behavior: HitTestBehavior.opaque,
         child: SingleChildScrollView(
-          child: DropdownForm(
+          child: NewShieldForm(
             shield: shield,
             username: username,
             repo: repo,
@@ -47,26 +49,26 @@ class ShieldListItem extends StatelessWidget {
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(5),
       ),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       child: ListTile(
         onTap: shield.category == ShieldCategory.badge
             ? () {
                 Clipboard.setData(
                     ClipboardData(text: shield.markdown({}, isStatic: false)));
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Badge copied to clipboard"),
+                  content: const Text("Badge copied to clipboard"),
                   backgroundColor: Colors.green,
                 ));
               }
-            : () => _createShield(context),
+            : () => createShield(context, shield),
         title: Text(shield.name),
         subtitle: Container(
-          margin: EdgeInsets.only(top: 8),
+          margin: const EdgeInsets.only(top: 8),
           height: 25,
           child: FadeInImage(
             fit: BoxFit.contain,
-            placeholder: AssetImage('assets/img/shield.png'),
+            placeholder: const AssetImage('assets/img/shield.png'),
             image: NetworkImage(
               shield.previewImgUrl,
             ),

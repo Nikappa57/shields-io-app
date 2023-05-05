@@ -8,6 +8,7 @@ class ShearchForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 1200,
       height: 50,
       padding: const EdgeInsets.symmetric(
         vertical: 8,
@@ -17,16 +18,16 @@ class ShearchForm extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search',
-                icon: Icon(Icons.search),
+                icon: const Icon(Icons.search),
               ),
               autofocus: true,
               onChanged: onSearching,
             ),
           ),
           IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: closeSearchBar,
           )
         ],

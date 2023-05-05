@@ -42,70 +42,76 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ReadMe Shield Editor'),
+        title: const Text('ReadMe Shield Editor'),
       ),
       body: Center(
-        child: SizedBox(
-          child: Card(
-            margin: EdgeInsets.all(20),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      key: ValueKey('username'),
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        labelText: 'GitHub Username',
-                        icon: const Icon(Icons.account_circle_outlined),
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty || value.length < 4) {
-                          return 'Username must be at least 4 char long';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _username = value;
-                      },
-                    ),
-                    TextFormField(
-                      key: ValueKey('repo'),
-                      autocorrect: false,
-                      textInputAction: TextInputAction.done,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        labelText: 'GitHub project name',
-                        icon: const Icon(Icons.title),
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'This field is required';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _repo = value;
-                      },
-                    ),
-                    _isLoading
-                        ? CircularProgressIndicator()
-                        : ElevatedButton(
-                            onPressed: () {
-                              _submit(context);
-                            },
-                            child: Text('Submit'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "Your static info",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: 500,
+              child: Card(
+                margin: const EdgeInsets.all(26),
+                elevation: 10.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          key: ValueKey('username'),
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.words,
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            labelText: 'GitHub Username',
+                            icon: const Icon(Icons.account_circle_outlined),
                           ),
-                  ],
+                          onSaved: (value) {
+                            _username = value;
+                          },
+                        ),
+                        TextFormField(
+                          key: ValueKey('repo'),
+                          autocorrect: false,
+                          textInputAction: TextInputAction.done,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            labelText: 'GitHub project name',
+                            icon: const Icon(Icons.title),
+                          ),
+                          onSaved: (value) {
+                            _repo = value;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _isLoading
+                            ? const CircularProgressIndicator()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  _submit(context);
+                                },
+                                child: const Text('Submit'),
+                              ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

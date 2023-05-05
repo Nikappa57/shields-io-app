@@ -9,46 +9,51 @@ class TopNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 53,
-      child: ListView.builder(
-        itemCount: ShieldCategory.values.length - 1, // - 1 for static
-        itemBuilder: (BuildContext context, int index) => InkWell(
-          onTap: () => changeCategory(ShieldCategory.values[index]),
-          child: Card(
-            elevation: 3,
-            color: ShieldCategory.values[index] == ShieldCategory.All
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).accentColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Center(
-                  child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    ShieldCategory.values[index].icon,
-                    color: Theme.of(context).accentIconTheme.color,
-                  ),
-                  if (ShieldCategory.values[index] == currentCategory)
-                    SizedBox(
-                      width: 10,
-                    ),
-                  if (ShieldCategory.values[index] == currentCategory)
-                    Text(
-                      ShieldCategory.values[index].name,
-                      style: TextStyle(
-                          color: Theme.of(context)
-                              .accentTextTheme
-                              .headline1
-                              .color),
-                    ),
-                ],
-              )),
+    return Center(
+      child: SizedBox(
+        height: 53,
+        child: Scrollbar(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: ShieldCategory.values.length - 1, // - 1 for static
+            itemBuilder: (BuildContext context, int index) => InkWell(
+              onTap: () => changeCategory(ShieldCategory.values[index]),
+              child: Card(
+                elevation: 3,
+                color: ShieldCategory.values[index] == ShieldCategory.All
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).accentColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Center(
+                      child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        ShieldCategory.values[index].icon,
+                        color: Theme.of(context).accentIconTheme.color,
+                      ),
+                      if (ShieldCategory.values[index] == currentCategory)
+                        SizedBox(
+                          width: 10,
+                        ),
+                      if (ShieldCategory.values[index] == currentCategory)
+                        Text(
+                          ShieldCategory.values[index].name,
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .accentTextTheme
+                                  .headline1
+                                  .color),
+                        ),
+                    ],
+                  )),
+                ),
+              ),
             ),
+            scrollDirection: Axis.horizontal,
           ),
         ),
-        scrollDirection: Axis.horizontal,
       ),
     );
   }

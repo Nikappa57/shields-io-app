@@ -8,8 +8,8 @@ import 'package:readme_editor/src/shield/colors.dart';
 import 'package:readme_editor/src/shield/styles.dart';
 import 'package:select_form_field/select_form_field.dart';
 
-class DropdownForm extends StatefulWidget {
-  DropdownForm({
+class NewShieldForm extends StatefulWidget {
+  NewShieldForm({
     @required this.shield,
     @required this.username,
     @required this.repo,
@@ -18,10 +18,10 @@ class DropdownForm extends StatefulWidget {
   final String repo;
   final ShieldModel shield;
   @override
-  _DropdownFormState createState() => _DropdownFormState();
+  _NewShieldFormState createState() => _NewShieldFormState();
 }
 
-class _DropdownFormState extends State<DropdownForm> {
+class _NewShieldFormState extends State<NewShieldForm> {
   Color _logoFormColor = Colors.black;
   String _logoHelperText = '';
 
@@ -101,10 +101,10 @@ class _DropdownFormState extends State<DropdownForm> {
         horizontal: 20,
       ),
       child: Container(
+        width: 500,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Create your Badges"),
             Form(
                 key: _formKey,
                 child: Column(
@@ -117,7 +117,7 @@ class _DropdownFormState extends State<DropdownForm> {
                           decoration: InputDecoration(
                             labelText: arg.replaceAll(
                                 RegExp(r'[\*\?]$'), ' (optional)'),
-                            icon: Icon(Icons.text_fields),
+                            icon: const Icon(Icons.text_fields),
                           ),
                           key: ValueKey(arg),
                           textInputAction: TextInputAction.next,
@@ -154,8 +154,10 @@ class _DropdownFormState extends State<DropdownForm> {
                             setState(() {
                               widget.shield.icon = null;
                             });
-                            var hintLogo = icons.firstWhere((element) =>
-                                element.name.toLowerCase().startsWith(val));
+                            var hintLogo = icons.firstWhere((element) => element
+                                .name
+                                .toLowerCase()
+                                .startsWith(val.toLowerCase()));
                             setState(() {
                               _logoFormColor = Colors.red;
                               if (hintLogo != null)
@@ -261,14 +263,15 @@ class _DropdownFormState extends State<DropdownForm> {
                                   .markdown(_args, isStatic: isStatic)));
 
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Shield copied to clipboard"),
+                            content: const Text("Shield copied to clipboard"),
                             backgroundColor: Colors.green,
                           ));
                         },
                         child: FadeInImage(
                           fit: BoxFit.contain,
                           height: 30,
-                          placeholder: AssetImage('assets/img/shield.png'),
+                          placeholder:
+                              const AssetImage('assets/img/shield.png'),
                           image: NetworkImage(
                             isStatic
                                 ? widget.shield

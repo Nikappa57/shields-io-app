@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:readme_editor/models/shield.dart';
 import 'package:readme_editor/provider/shield.dart';
 import 'package:readme_editor/src/shield/category.dart';
-import 'package:readme_editor/widgets/shield_list/dropdown_button.dart';
-import 'package:readme_editor/widgets/shield_list/dropdown_form.dart';
+import 'package:readme_editor/widgets/shield_list/newshield_form.dart';
 import 'package:readme_editor/widgets/shield_list/search_form.dart';
 import 'package:readme_editor/widgets/shield_list/shield_list_item.dart';
 import 'package:readme_editor/widgets/shield_list/topnavbar.dart';
@@ -48,26 +47,23 @@ class _SingleReadMeState extends State<SingleReadMe> {
 
   void _createShield(
     BuildContext context,
+    ShieldModel shiled,
   ) {
-    showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
-        borderRadius: const BorderRadius.only(
-          topLeft: const Radius.circular(45.0),
-          topRight: const Radius.circular(45.0),
-        ),
-      ),
-      backgroundColor: Colors.white,
+    showDialog(
       context: context,
-      isScrollControlled: true,
-      builder: (_) => GestureDetector(
-        onTap: () {},
-        behavior: HitTestBehavior.opaque,
-        child: SingleChildScrollView(
-            child: DropdownForm(
-          shield: staitcShield,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Create your Badges"),
+        scrollable: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            const Radius.circular(20.0),
+          ),
+        ),
+        content: NewShieldForm(
+          shield: shiled,
           username: widget.username,
           repo: widget.repo,
-        )),
+        ),
       ),
     );
   }
@@ -75,7 +71,6 @@ class _SingleReadMeState extends State<SingleReadMe> {
   @override
   Widget build(BuildContext context) {
     List<ShieldModel> shields = Provider.of<Shields>(context).shields;
-    print(shields);
     if (!(_currentCategory == ShieldCategory.All))
       shields = shields
           .where((element) => element.category == _currentCategory)
@@ -107,14 +102,21 @@ class _SingleReadMeState extends State<SingleReadMe> {
           TopNavBar(_currentCategory, _changeCategory),
           if (_showSearchBar) ShearchForm(_changeSearchBar, _onSearching),
           Expanded(
-            child: Container(
-              child: ListView.builder(
-                itemCount: shields.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    ShieldListItem(
-                  shield: shields[index],
-                  repo: widget.repo,
-                  username: widget.username,
+            child: Scrollbar(
+              key: ValueKey(_currentCategory),
+              child: Container(
+                width: 1200,
+                child: ListView.builder(
+                  itemCount: shields.length,
+                  primary: false,
+                  key: ValueKey(_currentCategory),
+                  itemBuilder: (BuildContext context, int index) =>
+                      ShieldListItem(
+                    shield: shields[index],
+                    repo: widget.repo,
+                    username: widget.username,
+                    createShield: _createShield,
+                  ),
                 ),
               ),
             ),
@@ -123,9 +125,9 @@ class _SingleReadMeState extends State<SingleReadMe> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _createShield(context);
+          _createShield(context, staitcShield);
         },
-        child: Icon(Icons.badge),
+        child: const Icon(Icons.badge),
       ),
     );
   }

@@ -18,7 +18,6 @@ class Shields extends ChangeNotifier {
   }
 
   Future<void> setData() async {
-    print("SET DATA");
     if (_shields.isNotEmpty) return null;
     Scraper scraper = Scraper();
     // Shields
@@ -54,7 +53,6 @@ class Shields extends ChangeNotifier {
       futures.add(thread);
     }
     await Future.wait(futures);
-    print("SHIELDS");
     // Badges
     final List<Map<String, String>> badges = await scraper.getStaticBadges();
     for (Map<String, String> badgeElement in badges) {
