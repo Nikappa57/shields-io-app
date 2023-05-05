@@ -8,10 +8,16 @@ class Scraper {
   Future<List> getShieldsByCategory(String categoryLink) async {
     List<Map<String, String>> shields = [];
     if (await shieldScraper.loadWebPage(categoryLink)) {
-      final List<Map<String, dynamic>> elementsImg = shieldScraper
-          .getElement('tr > td > span.OYSbn > img', ['alt', 'src']);
+      final List<Map<String, dynamic>> elementsImg = shieldScraper.getElement(
+          'tr > td > span.hRIOFQ > img',
+          ['alt', 'src']);
       final List<Map<String, dynamic>> elementsCode = shieldScraper
           .getElement('tr > td > code.snippet__StyledCode-rxmdgr-1', []);
+      // print("CODE: $elementsCode");
+      // print("IMG: $elementsImg");
+      print(categoryLink);
+      print(elementsImg.length);
+      print(elementsCode.length);
       if (elementsImg.length != elementsCode.length) return null;
       final int len = elementsImg.length;
       for (int i = 0; i < len; i++) {
@@ -22,6 +28,7 @@ class Scraper {
         });
       }
     }
+    print(shields);
     return shields;
   }
 
@@ -32,7 +39,6 @@ class Scraper {
     if (await iconScraper
         .loadWebPage('/simple-icons/simple-icons/develop/slugs.md')) {
       String pageContent = iconScraper.getPageContent();
-      print(pageContent.split('\n'));
       final matches = iconsPattern.allMatches(pageContent);
 
       for (var match in matches) {
@@ -42,7 +48,6 @@ class Scraper {
         });
       }
     }
-    print("Icons: $icons");
     return icons;
   }
 

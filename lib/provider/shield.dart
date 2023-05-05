@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readme_editor/models/icon.dart';
 import 'package:readme_editor/models/shield.dart';
@@ -20,14 +18,9 @@ class Shields extends ChangeNotifier {
   }
 
   Future<void> setData() async {
+    print("SET DATA");
+    if (_shields.isNotEmpty) return null;
     Scraper scraper = Scraper();
-    final user = FirebaseAuth.instance.currentUser;
-    final shieldData = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('favouriteShield')
-        .get();
-
     // Shields
     var futures = <Future>[];
     for (ShieldCategory category in ShieldCategory.values) {
@@ -43,17 +36,12 @@ class Shields extends ChangeNotifier {
           if (shieldElement['name'] != null &&
               shieldElement['code'] != null &&
               shieldElement['img'] != null) {
-            final bool favourite = shieldData.docs
-                .where((element) =>
-                    element.data()['shield-code'] == shieldElement['code'])
-                .isNotEmpty;
             ShieldModel shield = ShieldModel(
               name: shieldElement['name'],
               code: shieldElement['code'],
               previewImgUrl: shieldElement['img'].replaceAll(
                   'https://shields.io', 'https://raster.shields.io'),
               category: category,
-              favourite: favourite,
             );
             if (shield.code.contains('?style=social')) {
               shield.code = shield.code.replaceAll('?style=social', '');
@@ -65,9 +53,8 @@ class Shields extends ChangeNotifier {
       });
       futures.add(thread);
     }
-
     await Future.wait(futures);
-
+    print("SHIELDS");
     // Badges
     final List<Map<String, String>> badges = await scraper.getStaticBadges();
     for (Map<String, String> badgeElement in badges) {
@@ -77,11 +64,6 @@ class Shields extends ChangeNotifier {
         if (_shields
             .where((element) => element.name == badgeElement['name'])
             .isNotEmpty) continue;
-        final bool favourite = shieldData.docs
-            .where((element) =>
-                element.data()['shield-code'] == badgeElement['code'])
-            .isNotEmpty;
-
         _shields.add(
           ShieldModel(
             name: badgeElement['name'],
@@ -89,7 +71,6 @@ class Shields extends ChangeNotifier {
             previewImgUrl: badgeElement['img'].replaceAll(
                 'https://img.shields.io', 'https://raster.shields.io'),
             category: ShieldCategory.badge,
-            favourite: favourite,
           ),
         );
       }

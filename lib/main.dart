@@ -1,76 +1,45 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:readme_editor/provider/shield.dart';
 
-import 'package:readme_editor/screens/auth_screen.dart';
-import 'package:readme_editor/screens/home.dart';
-import 'package:readme_editor/screens/splash_screen.dart';
+import 'package:readme_editor/provider/shield.dart';
+import 'package:readme_editor/screens/start_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initialization,
-      builder: (BuildContext context, AsyncSnapshot snapshot) =>
-          ChangeNotifierProvider(
-        create: (ctx) => Shields(),
-        child: MaterialApp(
-          title: 'ReadMe Shield Editor',
-          theme: ThemeData(
-              primaryColor: Colors.purple[900],
-              backgroundColor: Colors.purple[900],
-              accentColor: Colors.orange[400],
-              accentColorBrightness: Brightness.dark,
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.purple[900]),
+    return ChangeNotifierProvider(
+      create: (ctx) => Shields(),
+      child: MaterialApp(
+        title: 'ReadMe Shield Editor',
+        theme: ThemeData(
+          primaryColor: Colors.purple[900],
+          backgroundColor: Colors.purple[900],
+          accentColor: Colors.orange[400],
+          accentColorBrightness: Brightness.dark,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              textButtonTheme: TextButtonThemeData(
-                style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(
-                    TextStyle(color: Colors.purple[900]),
-                  ),
-                ),
-              )),
-          home: snapshot.connectionState != ConnectionState.done
-              ? SplashScreen()
-              : StreamBuilder(
-                  stream: FirebaseAuth.instance.authStateChanges(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SplashScreen();
-                    }
-
-                    if (snapshot.hasData) {
-                      return FutureBuilder(
-                          future: Provider.of<Shields>(context, listen: false)
-                              .setData(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) return SplashScreen();
-                            return Home();
-                          });
-                    }
-                    return AuthScreen();
-                  },
-                ),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.purple[900]),
+            ),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              textStyle: MaterialStateProperty.all(
+                TextStyle(color: Colors.purple[900]),
+              ),
+            ),
+          ),
         ),
+        home: StartScreen(),
       ),
     );
   }

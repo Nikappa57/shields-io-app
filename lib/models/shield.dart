@@ -13,7 +13,6 @@ class ShieldModel {
   BadgeIconModel icon;
   ShieldCategory category;
   String previewImgUrl;
-  bool favourite;
 
   ShieldModel({
     @required this.name,
@@ -23,7 +22,6 @@ class ShieldModel {
     this.titlecolor,
     @required this.category,
     @required this.previewImgUrl,
-    @required this.favourite,
   });
 
   String staticShieldLink(Map<String, String> shieldArgs) {
@@ -97,5 +95,4 @@ ShieldModel staitcShield = ShieldModel(
   code: '/badge/:title*-:text-:color',
   category: ShieldCategory.static,
   previewImgUrl: 'https://raster.shields.io/badge/title-text-red',
-  favourite: false,
 );
