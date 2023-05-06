@@ -91,7 +91,7 @@ class _SingleReadMeState extends State<SingleReadMe> {
         actions: [
           IconButton(
               icon: Icon(
-                Icons.more_vert,
+                Icons.search,
                 color: Theme.of(context).primaryIconTheme.color,
               ),
               onPressed: _changeSearchBar),
